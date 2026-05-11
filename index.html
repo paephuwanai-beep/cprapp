@@ -328,13 +328,14 @@
 
         <div id="tab-guideline" class="tab-pane">
             <div class="glass-card bg-gradient-to-br from-white to-red-50">
-                <div class="flex items-center justify-between mb-4 border-b pb-4">
-                    <h2 class="text-2xl font-bold text-red-700"><i class="fa-solid fa-book-medical mr-2"></i> AHA CPR 2020/2025</h2>
+                <div class="flex items-center justify-between mb-6 border-b border-red-200 pb-4">
+                    <h2 class="text-2xl font-bold text-red-700"><i class="fa-solid fa-book-medical mr-2"></i> AHA CPR & ECC Guidelines</h2>
                     <div class="pulse-circle"><i class="fa-solid fa-heart heart-anim text-4xl"></i></div>
                 </div>
-                <div class="space-y-4">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white p-5 rounded-xl border-l-4 border-red-500 shadow-sm">
-                        <h3 class="font-bold text-lg text-slate-800 mb-3">High-Quality CPR</h3>
+                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-hands-praying text-red-500 mr-2"></i>High-Quality CPR</h3>
                         <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
                             <li><strong>Push hard, push fast:</strong> กดลึกอย่างน้อย 2 นิ้ว (5 ซม.) แต่ไม่เกิน 2.4 นิ้ว (6 ซม.)</li>
                             <li><strong>Rate:</strong> อัตรา 100-120 ครั้งต่อนาที</li>
@@ -397,6 +398,17 @@
                             </ul>
                         </div>
                     </div>
+                    
+                    <div class="bg-emerald-50 p-5 rounded-xl border-l-4 border-emerald-500 shadow-sm md:col-span-2">
+                        <h3 class="font-bold text-lg text-emerald-800 mb-3"><i class="fa-solid fa-heart-circle-check text-emerald-500 mr-2"></i>Post-Cardiac Arrest Care (หลัง ROSC)</h3>
+                        <ul class="list-disc pl-5 text-sm text-emerald-900 space-y-2">
+                            <li>รักษาระดับ Oxygen saturation (SpO2) ให้มากกว่าหรือเท่ากับ 92-98%</li>
+                            <li>รักษาความดันโลหิต Systolic > 90 mmHg หรือ MAP > 65 mmHg</li>
+                            <li>พิจารณา Targeted Temperature Management (TTM) ที่ 32-36 °C เป็นเวลาอย่างน้อย 24 ชม. หากผู้ป่วยยังไม่ตื่นทำตามคำสั่งได้</li>
+                            <li>ทำ 12-lead ECG ทันที หากพบ STEMI ควรส่งทำ PCI</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -440,8 +452,8 @@
                         <span class="font-bold text-slate-800">Respiratory Parameters</span>
                     </label>
                     <div class="ml-8 flex items-center gap-2 text-sm text-slate-600">
-                        <span>Keep SpO2 ≥ 92% (ค่า SpO2 ปัจจุบัน:</span>
-                        <input type="text" id="roscSpo2Val" class="border border-slate-300 rounded px-2 py-1 w-20 focus:border-emerald-500 outline-none" placeholder="%">
+                        <span>Keep SpO2 ≥ 92% (ค่าปัจจุบัน:</span>
+                        <input type="text" id="roscSpo2Val" class="border border-slate-300 rounded px-2 py-1 w-16 focus:border-emerald-500 outline-none" placeholder="%">
                         <span>)</span>
                     </div>
                 </div>
@@ -452,8 +464,8 @@
                         <span class="font-bold text-slate-800">Hemodynamic Parameters</span>
                     </label>
                     <div class="ml-8 flex flex-wrap items-center gap-2 text-sm text-slate-600">
-                        <span>Keep SBP > 90 mmHg / MAP > 65 (BP ปัจจุบัน:</span>
-                        <input type="text" id="roscBpVal" class="border border-slate-300 rounded px-2 py-1 w-24 focus:border-emerald-500 outline-none" placeholder="mmHg">
+                        <span>Keep SBP > 90 / MAP > 65 (ค่าปัจจุบัน:</span>
+                        <input type="text" id="roscBpVal" class="border border-slate-300 rounded px-2 py-1 w-20 focus:border-emerald-500 outline-none" placeholder="mmHg">
                         <span>)</span>
                     </div>
                 </div>
@@ -469,8 +481,8 @@
                 <label class="flex items-start p-3 glass-input cursor-pointer hover:bg-white transition">
                     <input type="checkbox" id="roscTtm" class="mt-1 mr-3 w-5 h-5 accent-emerald-600">
                     <div>
-                        <span class="font-bold text-slate-800 block">Targeted Temperature Management (TTM)</span>
-                        <span class="text-xs text-slate-500">พิจารณาทำ TTM หากผู้ป่วยยังไม่ตื่นทำตามคำสั่ง (Comatose)</span>
+                        <span class="font-bold text-slate-800 block">Targeted Temp Management (TTM)</span>
+                        <span class="text-xs text-slate-500">พิจารณาทำ TTM หากผู้ป่วยยังไม่ตื่นทำตามคำสั่ง</span>
                     </div>
                 </label>
             </div>
@@ -628,7 +640,7 @@
         }
         document.querySelectorAll('.nav-item, .nav-item-desktop').forEach(item => { item.addEventListener('click', function() { switchModule(this.getAttribute('data-target')); }); });
 
-        // --- SUBTITLE & VOICE (Interactive) ---
+        // --- SUBTITLE & VOICE (Interactive Fix) ---
         let thVoice = null;
         let voiceUnlocked = false;
 
@@ -638,14 +650,16 @@
         }
         if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = setupVoice; }
 
-        document.addEventListener('click', function unlockVoice() {
-            if(!voiceUnlocked && 'speechSynthesis' in window) {
-                let u = new SpeechSynthesisUtterance('');
+        function unlockVoice() {
+            if(!voiceUnlocked && window.speechSynthesis) {
+                let u = new SpeechSynthesisUtterance(' ');
+                u.lang = 'th-TH';
                 window.speechSynthesis.speak(u);
                 voiceUnlocked = true;
-                document.removeEventListener('click', unlockVoice);
+                ['click', 'touchstart', 'touchend'].forEach(evt => document.removeEventListener(evt, unlockVoice));
             }
-        });
+        }
+        ['click', 'touchstart', 'touchend'].forEach(evt => document.addEventListener(evt, unlockVoice));
 
         function showSubtitle(text) {
             let el = document.getElementById('subtitle-toast');
@@ -657,7 +671,7 @@
             }
             el.textContent = text;
             el.classList.add('show');
-            setTimeout(() => { el.classList.remove('show'); }, 3500); // แสดง 3.5 วินาที
+            setTimeout(() => { el.classList.remove('show'); }, 3500); 
         }
 
         function speak(text) { 
@@ -749,7 +763,6 @@
                     meds: getLogsFromHTML(DOM.medicationActivityLog),
                     ecg: getLogsFromHTML(DOM.ecgActivityLog)
                 },
-                // รับค่า Checklist เข้ามาเก็บในระบบ
                 checklist: {
                     airway: document.getElementById('chkAirway').checked,
                     ettNo: document.getElementById('ettNo').value,
@@ -780,11 +793,9 @@
             const data = getPatientFormData();
             if(!activePatientId) activePatientId = 'pat_' + Date.now();
             
-            // เซฟลงเครื่อง
             saveToLocalPatients(activePatientId, data);
             renderRegistryTable(getLocalPatients());
 
-            // ซิงค์ Firebase
             const docRef = doc(db, "patients", activePatientId);
             setDoc(docRef, { info: data }, { merge: true }).catch(e => console.warn(e));
             
@@ -832,7 +843,6 @@
             }
         }
 
-        // --- FIRESTORE: LOAD DATA (Hybrid) ---
         function loadRegistryData() {
             renderRegistryTable(getLocalPatients());
 
@@ -953,7 +963,7 @@
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = eta.toLocaleTimeString('th-TH').split(' ')[0];
         }
 
-        // --- Timer Buttons (FIXED LOOPING) ---
+        // --- Timer Buttons ---
         DOM.startCprTimerBtn.addEventListener('click', () => {
             if (isCprTimerRunning) return;
             if (roscAchieved) { overallCprTimeRemaining = 1800; cprStartTime = null; roscAchieved = false; logActivity("เริ่ม CPR ซ้ำ", "CPR"); }
@@ -983,7 +993,7 @@
                     if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = formatTime(120);
                     
                     if (DOM.cprContinuousMode && DOM.cprContinuousMode.checked) {
-                        DOM.startCprTimerBtn.disabled = false; // ปลดล็อกปุ่ม
+                        DOM.startCprTimerBtn.disabled = false; 
                         setTimeout(() => DOM.startCprTimerBtn.click(), 100);
                     } else { 
                         DOM.stopCprTimerBtn.disabled = true; DOM.startCprTimerBtn.disabled = false; DOM.resetCprTimerBtn.disabled = false; 
@@ -1005,7 +1015,7 @@
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; logActivity("รีเซ็ตนาฬิกา CPR", 'CPR');
         });
 
-        // --- FIX LOGIC ADRENALINE (เริ่มจับ = นับ Dose ทันที) ---
+        // --- Adrenaline (ADVANCE LOGIC) ---
         DOM.startAdrenalineTimerBtn.addEventListener('click', () => {
             if (isAdrenalineTimerRunning) return;
             
@@ -1015,7 +1025,7 @@
             isAdrenalineTimerRunning = true; 
             DOM.startAdrenalineTimerBtn.disabled = true; DOM.stopAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = true;
             
-            logActivity(`ฉีดยา Adrenaline Dose ${adrenalineDose} และเริ่มจับเวลา 3 นาที`, 'ADRENALINE');
+            logActivity(`ฉีดยา Adrenaline Dose ${adrenalineDose} แล้ว และเริ่มจับเวลา 3 นาที`, 'ADRENALINE');
             speak(`ฉีดยาอะดรีนาลีนโดสที่ ${adrenalineDose}`);
             
             adrenalineTimerInterval = setInterval(() => {
@@ -1064,17 +1074,14 @@
             speak("อาร์ โอ เอส ซี กรุณาดูแลผู้ป่วยหลังการกู้ชีพ");
             
             DOM.roscBtn.style.display = 'none'; DOM.continueBtn.style.display = 'inline-flex';
-            
-            // Show ROSC Modal
-            document.getElementById('roscModal').classList.add('visible');
+            document.getElementById('roscModal').classList.add('visible'); // Show ROSC Modal
         });
 
-        // ปุ่มในหน้าต่าง ROSC
         document.getElementById('saveRoscBtn').addEventListener('click', () => {
             document.getElementById('roscModal').classList.remove('visible');
             if(DOM.quickSummaryBtn) {
                 DOM.quickSummaryBtn.style.display = 'block';
-                DOM.quickSummaryBtn.click(); // Auto click to show summary
+                DOM.quickSummaryBtn.click(); // โชว์ summary ทันที
             }
         });
 
@@ -1194,6 +1201,10 @@
                     <ul class="list-disc pl-5 text-xs">${cprL.filter(l => l.includes('เริ่มรอบ CPR')).map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
                 </div>
                 <div class="mt-2 border-t border-slate-200 pt-2">
+                    <p class="font-bold text-purple-700">Adrenaline Logs:</p>
+                    <ul class="list-disc pl-5 text-xs">${ev.logs.adrenaline.map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
+                </div>
+                <div class="mt-2 border-t border-slate-200 pt-2">
                     <p class="font-bold text-emerald-700">การให้ยาอื่นๆ:</p>
                     <ul class="list-disc pl-5 text-xs">${medL.map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
                 </div>
@@ -1228,14 +1239,33 @@
             const getRadioValue = (val) => val === 'yes' ? 'ใช่' : 'ไม่';
             let medsHtml = ev.medications && ev.medications.length ? ev.medications.map(m => `<tr><td>${m.name}</td><td>${m.dosage}</td><td>${m.time}</td><td>${m.notes}</td></tr>`).join('') : '<tr><td colspan="4" style="text-align:center;">ไม่มีข้อมูล</td></tr>';
             let ecgsHtml = ev.ecgs && ev.ecgs.length ? ev.ecgs.map(e => `<tr><td>${e.type}</td><td>${e.activity}</td><td>${e.output}</td><td>${e.time}</td><td>${e.notes}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">ไม่มีข้อมูล</td></tr>';
-            let cprLogsHtml = ev.logs && ev.logs.cpr ? ev.logs.cpr.map(l => `<li>${l.replace(/<[^>]*>?/gm, '')}</li>`).join('') : '<li>ไม่มีข้อมูล</li>';
+            
+            // รวม Logs เข้าด้วยกันเป็น Timeline
+            let allLogs = [];
+            const parsePdfLogs = (arr, type) => {
+                if(!arr) return;
+                arr.forEach(text => {
+                    const cleanText = text.replace(/<[^>]*>?/gm, '');
+                    const match = cleanText.match(/^\[(.*?)\]\s*(.*)$/);
+                    if(match) allLogs.push({ time: match[1], text: `[${match[1]}] <strong>${type}</strong>: ${match[2]}` });
+                    else allLogs.push({ time: '', text: `<strong>${type}</strong>: ${cleanText}` });
+                });
+            };
+            if(ev.logs) {
+                parsePdfLogs(ev.logs.cpr, 'CPR'); parsePdfLogs(ev.logs.adrenaline, 'Adren');
+                parsePdfLogs(ev.logs.meds, 'Med'); parsePdfLogs(ev.logs.ecg, 'ECG');
+            }
+            allLogs.sort((a,b) => a.time.localeCompare(b.time));
+            let combinedLogsHtml = allLogs.length ? allLogs.map(l => `<li style="margin-bottom:4px;">${l.text}</li>`).join('') : '<li>ไม่มีข้อมูล</li>';
 
             container.innerHTML = `
                 <h1 style="text-align:center; font-size:20pt; font-weight:bold; border-bottom:2px solid #000; padding-bottom:10px;">บันทึกเหตุการณ์ช่วยฟื้นคืนชีพ (CPR Record)</h1>
                 <p><strong>วันที่พิมพ์:</strong> ${new Date().toLocaleDateString('th-TH')} <strong>เวลา:</strong> ${new Date().toLocaleTimeString('th-TH')}</p>
+                
                 <h2 style="background:#f0f0f0; padding:5px; font-size:14pt; margin-top:15px;">ข้อมูลผู้ป่วย</h2>
                 <p><strong>HN:</strong> ${pInfo.hn || '-'} | <strong>ชื่อ-สกุล:</strong> ${pInfo.name || '-'} | <strong>อายุ:</strong> ${pInfo.age || '-'} ปี</p>
                 <p><strong>สาเหตุ CPR:</strong> ${pInfo.cause || '-'} | <strong>โรคประจำตัว:</strong> ${pInfo.underlying || '-'}</p>
+                
                 <h2 style="background:#f0f0f0; padding:5px; font-size:14pt; margin-top:15px;">ภาพรวมเวลา</h2>
                 <p><strong>เริ่ม:</strong> ${ev.startTime ? new Date(ev.startTime).toLocaleTimeString('th-TH') : '-'} | <strong>หยุด/ROSC:</strong> ${ev.stopTime ? new Date(ev.stopTime).toLocaleTimeString('th-TH') : '-'}</p>
                 <p><strong>รวมเวลา:</strong> ${formatTime(ev.totalCprSeconds || 0)} | <strong>สาเหตุยุติ:</strong> ${ev.stopReason || '-'} | <strong>Adrenaline รวม:</strong> ${ev.adrenalineDose || 0} Dose</p>
@@ -1260,8 +1290,8 @@
                 <table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
                     <tr style="background:#e0e0e0;"><th>ECG</th><th>กิจกรรม</th><th>Joule</th><th>เวลา</th><th>หมายเหตุ</th></tr>${ecgsHtml}
                 </table>
-                <h2 style="background:#f0f0f0; padding:5px; font-size:14pt; margin-top:15px;">บันทึก Logs (บางส่วน)</h2>
-                <ul style="font-size:12pt;">${cprLogsHtml}</ul>
+                <h2 style="background:#f0f0f0; padding:5px; font-size:14pt; margin-top:15px;">บันทึกลำดับเหตุการณ์ (Timeline Logs)</h2>
+                <ul style="font-size:12pt; list-style-type: none; padding-left: 0;">${combinedLogsHtml}</ul>
                 <div style="margin-top:40px; text-align:right; font-size:14pt;">
                     <p>ผู้บันทึก: ${ev.recorder || '.............................................'}</p>
                     <p>หมายเหตุเพิ่มเติม: ${ev.notes || '-'}</p>
