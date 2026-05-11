@@ -8,6 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -90,13 +92,28 @@
         .pulse-circle { width: 80px; height: 80px; background: rgba(239, 68, 68, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: heartbeat 1.5s infinite; }
         
         .active-patient-banner { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; padding: 0.75rem 1rem; border-radius: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); cursor: pointer; }
+
+        /* Interactive Subtitle Toast */
+        .subtitle-toast {
+            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.9); color: #fff; padding: 1.25rem 2.5rem;
+            border-radius: 9999px; font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 800;
+            z-index: 9999; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: center; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255,255,255,0.2);
+            white-space: nowrap;
+        }
+        .subtitle-toast.show { opacity: 1; transform: translate(-50%, 10px); }
     </style>
 </head>
 <body>
 
     <div class="container mx-auto px-4 !pb-0 hidden md:block">
         <header class="text-center py-4 mt-2">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight"><span class="text-indigo-600">KS</span>CPR</h1>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
+                <span class="text-indigo-600">KS</span>CPR
+            </h1>
             <p class="text-slate-500 font-medium">Smart Resuscitation Assistant</p>
         </header>
         <nav class="desktop-nav">
@@ -107,7 +124,9 @@
     </div>
 
     <div class="container !pt-4">
+        
         <div id="tab-home" class="tab-pane active">
+            
             <div id="activePatientBanner" class="active-patient-banner" onclick="switchModule('tab-registry')">
                 <div>
                     <div class="text-xs text-blue-100 uppercase tracking-wide font-bold mb-1">ผู้ป่วยที่กำลังกู้ชีพ (Active Patient)</div>
@@ -161,7 +180,7 @@
                         <button id="stopCprTimerBtn" class="btn btn-secondary text-lg" disabled><i class="fa-solid fa-pause mr-1"></i> หยุด</button>
                         <button id="resetCprTimerBtn" class="btn btn-secondary text-lg"><i class="fa-solid fa-rotate-right mr-1"></i> รีเซ็ต</button>
                     </div>
-                    <div class="mt-4 flex flex-col sm:flex-row justify-between text-sm font-semibold text-slate-600 bg-white p-3 rounded-lg gap-2">
+                    <div class="mt-4 flex flex-col sm:flex-row justify-between text-sm font-semibold text-slate-600 bg-white p-3 rounded-lg gap-2 border border-slate-100">
                         <span>เวลาเริ่ม: <span id="cprStartTimeDisplay" class="text-slate-800">--:--:--</span></span>
                         <div class="flex flex-col sm:text-right"><span>ครบ 2 นาทีถัดไป:</span><span id="cprCycleEtaDisplay" class="text-red-500 text-lg font-bold">--:--:--</span></div>
                     </div>
@@ -171,10 +190,13 @@
                     <div class="absolute top-0 right-0 p-4">
                         <label class="flex items-center space-x-2 cursor-pointer bg-white/50 px-3 py-1.5 rounded-full shadow-sm"><input type="checkbox" id="adrenalineContinuousMode" class="w-4 h-4 accent-purple-600"><span class="text-slate-700 text-xs font-bold">ต่อเนื่อง</span></label>
                     </div>
-                    <h2 class="text-xl font-bold text-purple-800 mb-2 flex items-center">
-                        <i class="fa-solid fa-syringe mr-2"></i>Adrenaline
-                        <span class="ml-3 text-sm bg-purple-100 text-purple-800 py-1 px-3 rounded-full">Dose: <span id="adrenalineDoseDisplay" class="font-extrabold text-base">0</span></span>
+                    <h2 class="text-xl font-bold text-purple-800 mb-1 flex items-center">
+                        <i class="fa-solid fa-syringe mr-2"></i>Adrenaline 1:10,000
+                        <span class="ml-3 text-sm bg-purple-100 text-purple-800 py-1 px-3 rounded-full shadow-sm">Dose: <span id="adrenalineDoseDisplay" class="font-extrabold text-base">0</span></span>
                     </h2>
+                    <p class="text-[11px] md:text-xs text-purple-600 mb-2 font-medium bg-purple-50 p-2 rounded-lg border border-purple-100 inline-block">
+                        <i class="fa-solid fa-flask text-purple-400 mr-1"></i> ผสม: ยา 1 amp + NSS 9 ml (Push แล้วตามด้วย NSS 20 ml)
+                    </p>
                     <div id="adrenalineTimerDisplay" class="timer-display text-purple-600">03:00</div>
                     <div class="grid grid-cols-3 gap-2">
                         <button id="startAdrenalineTimerBtn" class="btn !bg-purple-600 !text-white text-lg"><i class="fa-solid fa-play mr-1"></i> เริ่ม</button>
@@ -280,12 +302,11 @@
 
         <div id="tab-guideline" class="tab-pane">
             <div class="glass-card bg-gradient-to-br from-white to-red-50">
-                <div class="flex items-center justify-between mb-6 border-b border-red-200 pb-4">
-                    <h2 class="text-2xl font-bold text-red-700"><i class="fa-solid fa-book-medical mr-2"></i> AHA CPR & ECC Guidelines</h2>
+                <div class="flex items-center justify-between mb-4 border-b pb-4">
+                    <h2 class="text-2xl font-bold text-red-700"><i class="fa-solid fa-book-medical mr-2"></i> AHA CPR 2020/2025</h2>
                     <div class="pulse-circle"><i class="fa-solid fa-heart heart-anim text-4xl"></i></div>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-4">
                     <div class="bg-white p-5 rounded-xl border-l-4 border-red-500 shadow-sm">
                         <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-hands-praying text-red-500 mr-2"></i>High-Quality CPR</h3>
                         <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
@@ -350,17 +371,6 @@
                             </ul>
                         </div>
                     </div>
-                    
-                    <div class="bg-emerald-50 p-5 rounded-xl border-l-4 border-emerald-500 shadow-sm md:col-span-2">
-                        <h3 class="font-bold text-lg text-emerald-800 mb-3"><i class="fa-solid fa-heart-circle-check text-emerald-500 mr-2"></i>Post-Cardiac Arrest Care (หลัง ROSC)</h3>
-                        <ul class="list-disc pl-5 text-sm text-emerald-900 space-y-2">
-                            <li>รักษาระดับ Oxygen saturation (SpO2) ให้มากกว่าหรือเท่ากับ 92-98%</li>
-                            <li>รักษาความดันโลหิต Systolic > 90 mmHg หรือ MAP > 65 mmHg</li>
-                            <li>พิจารณา Targeted Temperature Management (TTM) ที่ 32-36 °C เป็นเวลาอย่างน้อย 24 ชม. หากผู้ป่วยยังไม่ตื่นทำตามคำสั่งได้</li>
-                            <li>ทำ 12-lead ECG ทันที หากพบ STEMI ควรส่งทำ PCI</li>
-                        </ul>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -415,7 +425,7 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, deleteDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // === ใช้ Config ของผู้ใช้ตรงๆ ===
+        // === FIREBASE CONFIG ===
         const firebaseConfig = {
             apiKey: "AIzaSyAyEudrvfW4jTk8_l8blsQYLItvh2iXtkM",
             authDomain: "cprapp-90ac5.firebaseapp.com",
@@ -433,6 +443,7 @@
         let activePatientId = null;
         let activePatientData = null;
 
+        // Timer States
         let cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval;
         let cprTimeRemaining = 120, adrenalineTimeRemaining = 180, overallCprTimeRemaining = 1800;
         let isCprTimerRunning = false, isAdrenalineTimerRunning = false, isOverallCprCountdownRunning = false, roscAchieved = false;
@@ -526,7 +537,7 @@
         }
         document.querySelectorAll('.nav-item, .nav-item-desktop').forEach(item => { item.addEventListener('click', function() { switchModule(this.getAttribute('data-target')); }); });
 
-        // --- แกัปัญหาเสียงหาย (Voice Unlocker) ---
+        // --- SUBTITLE & VOICE (Interactive) ---
         let thVoice = null;
         let voiceUnlocked = false;
 
@@ -545,7 +556,21 @@
             }
         });
 
+        function showSubtitle(text) {
+            let el = document.getElementById('subtitle-toast');
+            if(!el) {
+                el = document.createElement('div');
+                el.id = 'subtitle-toast';
+                el.className = 'subtitle-toast';
+                document.body.appendChild(el);
+            }
+            el.textContent = text;
+            el.classList.add('show');
+            setTimeout(() => { el.classList.remove('show'); }, 4000);
+        }
+
         function speak(text) { 
+            showSubtitle(text); // โชว์ Subtitle เสมอ
             if ('speechSynthesis' in window) { 
                 window.speechSynthesis.cancel(); 
                 const u = new SpeechSynthesisUtterance(text); 
@@ -648,8 +673,6 @@
             
             // เซฟลงเครื่องเพื่อรับประกันว่าตารางไม่โล่งแน่ๆ
             saveToLocalPatients(activePatientId, data);
-            
-            // อัปเดตตาราง UI ทันที
             renderRegistryTable(getLocalPatients());
 
             // บังคับเซฟ Firebase (ถ้าเน็ตหลุดก็จะผ่าน catch ไป)
@@ -703,16 +726,14 @@
 
         // --- FIRESTORE: LOAD DATA (Hybrid) ---
         function loadRegistryData() {
-            // โหลดจาก Local Storage มาแสดงทันทีก่อน
             renderRegistryTable(getLocalPatients());
 
-            // เชื่อม Firestore
             onSnapshot(collection(db, "patients"), (snapshot) => {
-                let patientsObj = getLocalPatients(); // ดึงของเก่าในเครื่องมา Merge
+                let patientsObj = getLocalPatients(); 
                 snapshot.forEach((doc) => {
                     if(doc.data().info) patientsObj[doc.id] = doc.data();
                 });
-                localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(patientsObj)); // เซฟทับให้ Local อัปเดต
+                localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(patientsObj)); 
                 renderRegistryTable(patientsObj);
             }, (error) => {
                 console.warn("Firestore Read Failed, using Local DB:", error.message);
@@ -730,13 +751,11 @@
 
         window.deletePatient = async function(id) {
             if(confirm('ยืนยันลบผู้ป่วยรายนี้ และประวัติทั้งหมดออกจากระบบ?')) {
-                // ลบในเครื่อง
                 let localDb = getLocalPatients();
                 delete localDb[id];
                 localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
                 renderRegistryTable(localDb);
 
-                // ลบขึ้น Cloud
                 deleteDoc(doc(db, "patients", id)).catch(e=>console.warn("Cloud delete failed"));
                 if (activePatientId === id) { activePatientId=null; activePatientData=null; updateActivePatientUI(); }
             }
@@ -752,17 +771,14 @@
             const eventData = getCurrentEventData();
             const newEventId = 'evt_' + Date.now();
             
-            // เซฟลง Local Storage
             let localDb = getLocalPatients();
             if(!localDb[activePatientId].events) localDb[activePatientId].events = {};
             localDb[activePatientId].events[newEventId] = eventData;
             localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
 
-            // โยนขึ้น Cloud 
             const eventRef = doc(collection(db, `patients/${activePatientId}/events`), newEventId);
             setDoc(eventRef, eventData).catch(e => console.warn(e));
 
-            // ปิด Modal ทันที
             setTimeout(() => {
                 document.getElementById('summaryModal').classList.remove('visible');
                 showAlert('สำเร็จ', 'บันทึกเหตุการณ์การ CPR เข้าสู่ประวัติผู้ป่วยเรียบร้อยแล้ว');
@@ -829,7 +845,7 @@
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = eta.toLocaleTimeString('th-TH').split(' ')[0];
         }
 
-        // --- Timer Buttons ---
+        // --- Timer Buttons (FIXED LOOPING) ---
         DOM.startCprTimerBtn.addEventListener('click', () => {
             if (isCprTimerRunning) return;
             if (roscAchieved) { overallCprTimeRemaining = 1800; cprStartTime = null; roscAchieved = false; logActivity("เริ่ม CPR ซ้ำ", "CPR"); }
@@ -857,8 +873,14 @@
                     logActivity("ครบ 2 นาที คลำชีพจร", 'CPR'); cprTimeRemaining = 120; 
                     speak("ครบสองนาที คลำชีพจร");
                     if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = formatTime(120);
-                    if (DOM.cprContinuousMode && DOM.cprContinuousMode.checked) DOM.startCprTimerBtn.click();
-                    else { DOM.stopCprTimerBtn.disabled = true; DOM.startCprTimerBtn.disabled = false; DOM.resetCprTimerBtn.disabled = false; if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; }
+                    
+                    if (DOM.cprContinuousMode && DOM.cprContinuousMode.checked) {
+                        DOM.startCprTimerBtn.disabled = false; // ปลดล็อกปุ่มก่อนคลิก
+                        setTimeout(() => DOM.startCprTimerBtn.click(), 100);
+                    } else { 
+                        DOM.stopCprTimerBtn.disabled = true; DOM.startCprTimerBtn.disabled = false; DOM.resetCprTimerBtn.disabled = false; 
+                        if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; 
+                    }
                 }
             }, 1000);
         });
@@ -891,8 +913,13 @@
                     logActivity(`ฉีดยา Adrenaline Dose ${adrenalineDose} แล้ว`, 'ADRENALINE'); adrenalineTimeRemaining = 180; 
                     speak(`หมดเวลา ฉีดยาอะดรีนาลีนโดสที่ ${adrenalineDose}`);
                     if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
-                    if (DOM.adrenalineContinuousMode && DOM.adrenalineContinuousMode.checked) DOM.startAdrenalineTimerBtn.click();
-                    else { DOM.stopAdrenalineTimerBtn.disabled = true; DOM.startAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = false; }
+                    
+                    if (DOM.adrenalineContinuousMode && DOM.adrenalineContinuousMode.checked) {
+                        DOM.startAdrenalineTimerBtn.disabled = false; // ปลดล็อกปุ่มก่อนคลิก
+                        setTimeout(() => DOM.startAdrenalineTimerBtn.click(), 100);
+                    } else { 
+                        DOM.stopAdrenalineTimerBtn.disabled = true; DOM.startAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = false; 
+                    }
                 }
             }, 1000);
         });
@@ -987,10 +1014,13 @@
             if(DOM.causeOfCprOther) DOM.causeOfCprOther.style.display = e.target.value === 'อื่นๆ (ระบุ)' ? 'block' : 'none';
         });
 
-        // --- Summary, PDF, CSV ---
+        // --- Summary, PDF, CSV (FIXED MISSING LOGS) ---
         DOM.quickSummaryBtn.addEventListener('click', () => {
             const getLogs = (el) => Array.from(el.children).map(d => d.innerText).reverse();
             const cprL = DOM.cprActivityLog ? getLogs(DOM.cprActivityLog) : [];
+            const medL = DOM.medicationActivityLog ? getLogs(DOM.medicationActivityLog) : [];
+            const ecgL = DOM.ecgActivityLog ? getLogs(DOM.ecgActivityLog) : [];
+
             let totalCprTimeFormatted = formatTime(cprElapsedTime);
             if (cprStartTime && cprStopTime) totalCprTimeFormatted = formatTime(Math.floor((cprStopTime - cprStartTime) / 1000));
             const cycleCount = cprL.filter(l => l.includes('ครบ 2 นาที คลำชีพจร')).length;
@@ -1007,9 +1037,18 @@
                 <p><strong>เวลาเริ่ม CPR:</strong> ${cprStartTime ? cprStartTime.toLocaleTimeString('th-TH') : '-'}</p>
                 <p><strong>เวลายกเลิก/ROSC:</strong> ${cprStopTime ? cprStopTime.toLocaleTimeString('th-TH') : '-'}</p>
                 <p><strong>สถานะปัจจุบัน:</strong> <span class="text-red-600 font-bold">${stopReason || 'กำลังดำเนินการ'}</span></p>
+                
                 <div class="mt-4 border-t pt-2">
                     <p class="font-bold text-indigo-700">รอบ CPR:</p>
                     <ul class="list-disc pl-5 text-xs">${cprL.filter(l => l.includes('เริ่มรอบ CPR')).map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
+                </div>
+                <div class="mt-2 border-t pt-2">
+                    <p class="font-bold text-emerald-700">การให้ยาอื่นๆ:</p>
+                    <ul class="list-disc pl-5 text-xs">${medL.map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
+                </div>
+                <div class="mt-2 border-t pt-2">
+                    <p class="font-bold text-blue-700">บันทึก ECG/Defib:</p>
+                    <ul class="list-disc pl-5 text-xs">${ecgL.map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
                 </div>
             `;
             const contentDiv = document.getElementById('quickSummaryContent');
@@ -1122,7 +1161,6 @@
             createCSV(pInfo, getCurrentEventData(), `CPR_Record_${pInfo.hn}.csv`);
         });
 
-        // --- ดึงข้อมูลจาก LocalDB แทน (กันเหนียว) ในตอนทำ PDF/CSV ---
         window.downloadPatientPDF = async function(id) {
             try {
                 const localDb = getLocalPatients();
