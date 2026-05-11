@@ -32,12 +32,9 @@
         @media (min-width: 768px) { .container { padding-bottom: 2rem; padding-top: 1rem; } }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 1.25rem;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 1.25rem; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
             padding: 1.5rem; margin-bottom: 1.5rem;
         }
 
@@ -60,7 +57,6 @@
         
         .timer-display { font-size: clamp(3rem, 12vw, 5rem); font-weight: 800; text-align: center; margin-bottom: 0.5rem; line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
-        /* Navigation */
         .desktop-nav { display: none; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid rgba(0, 0, 0, 0.05); display: flex; justify-content: space-around; padding: 0.5rem 0; padding-bottom: env(safe-area-inset-bottom, 0.5rem); box-shadow: 0 -4px 20px rgba(0,0,0,0.05); z-index: 50; }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 0.75rem; width: 33.33%; cursor: pointer; transition: color 0.3s; }
@@ -90,6 +86,10 @@
         .modal-content { background: rgba(255, 255, 255, 0.95); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 2rem; border-radius: 1.5rem; width: 95%; max-width: 800px; max-height: 90vh; overflow-y: auto; transform: scale(0.95); transition: transform 0.3s; }
         .modal-overlay.visible .modal-content { transform: scale(1); }
 
+        @keyframes heartbeat { 0% { transform: scale(1); } 14% { transform: scale(1.15); } 28% { transform: scale(1); } 42% { transform: scale(1.15); } 70% { transform: scale(1); } }
+        .heart-anim { animation: heartbeat 1s infinite; color: #ef4444; }
+        .pulse-circle { width: 80px; height: 80px; background: rgba(239, 68, 68, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: heartbeat 1.5s infinite; }
+        
         .active-patient-banner { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; padding: 0.75rem 1rem; border-radius: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); cursor: pointer; }
     </style>
 </head>
@@ -110,9 +110,7 @@
     </div>
 
     <div class="container !pt-4">
-        
         <div id="tab-home" class="tab-pane active">
-            
             <div id="activePatientBanner" class="active-patient-banner" onclick="switchModule('tab-registry')">
                 <div>
                     <div class="text-xs text-blue-100 uppercase tracking-wide font-bold mb-1">ผู้ป่วยที่กำลังกู้ชีพ (Active Patient)</div>
@@ -132,13 +130,11 @@
                         <div id="overallCprElapsed" class="text-3xl lg:text-4xl font-extrabold text-indigo-600 tracking-tight">00:00</div>
                     </div>
                 </div>
-                
                 <div class="bg-red-50 rounded-xl px-4 py-2 flex flex-col items-center justify-center w-full md:w-auto border border-red-100 min-w-[200px]">
                     <div class="text-xs font-bold text-red-500 mb-1">เวลา CPR คงเหลือ (30 นาที)</div>
                     <div id="overallCprCountdown" class="text-3xl lg:text-4xl font-extrabold text-red-600 tracking-tight">30:00</div>
                     <div class="text-xs text-slate-500 mt-1">จะครบ 30 นาทีเวลา: <span id="cpr30mEtaDisplay" class="font-bold text-slate-700">--:--:--</span></div>
                 </div>
-
                 <button id="confirmDeathBtn" class="btn btn-red shadow-lg text-lg w-full md:w-auto px-6 py-4"><i class="fa-solid fa-hand mr-2"></i> ยุติการ CPR</button>
             </div>
 
@@ -278,7 +274,7 @@
                             <tr><th>HN</th><th>ชื่อ-สกุล</th><th>วันที่บันทึก</th><th>จัดการ (โหลด PDF/CSV)</th></tr>
                         </thead>
                         <tbody id="registryTableBody">
-                            <tr><td colspan="4" class="text-center text-slate-500">ไม่มีข้อมูล...</td></tr>
+                            <tr><td colspan="4" class="text-center text-slate-500">กำลังเชื่อมต่อฐานข้อมูล...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -299,7 +295,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <nav class="bottom-nav">
@@ -341,16 +336,12 @@
         </div>
     </div>
 
-    <div id="reportContainerWrapper" style="position: absolute; left: -9999px; top: auto; width: 210mm; background: white; color: black; z-index: -1;">
-        <div id="reportContent"></div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getDatabase, ref, set, onValue, push, remove, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, deleteDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // === FIREBASE CONFIG ===
+        // === ใช้ Config ชุดเดิม แต่เปลี่ยนไปต่อ FIRESTORE แทน ===
         const firebaseConfig = {
             apiKey: "AIzaSyAyEudrvfW4jTk8_l8blsQYLItvh2iXtkM",
             authDomain: "cprapp-90ac5.firebaseapp.com",
@@ -359,17 +350,15 @@
             messagingSenderId: "423113457627",
             appId: "1:423113457627:web:f733c99f3f9fcba2fc31fe"
         };
-        if (!firebaseConfig.databaseURL) { firebaseConfig.databaseURL = `https://${firebaseConfig.projectId}-default-rtdb.asia-southeast1.firebasedatabase.app/`; }
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getDatabase(app);
+        const db = getFirestore(app); // ใช้ FIRESTORE ตามที่คุณแจ้ง
         
         let userId = null;
         let activePatientId = null;
         let activePatientData = null;
 
-        // Timer States
         let cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval;
         let cprTimeRemaining = 120, adrenalineTimeRemaining = 180, overallCprTimeRemaining = 1800;
         let isCprTimerRunning = false, isAdrenalineTimerRunning = false, isOverallCprCountdownRunning = false, roscAchieved = false;
@@ -464,7 +453,37 @@
         }
         document.querySelectorAll('.nav-item, .nav-item-desktop').forEach(item => { item.addEventListener('click', function() { switchModule(this.getAttribute('data-target')); }); });
 
-        // --- Firebase Initialization ---
+        // --- แก้ปัญหาเสียงหาย (ปลดล็อกเมื่อแตะจอ) ---
+        let thVoice = null;
+        let voiceUnlocked = false;
+
+        function setupVoice() {
+            let voices = window.speechSynthesis.getVoices();
+            thVoice = voices.find(v => v.lang === 'th-TH' && (v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Siri'))) || voices.find(v => v.lang === 'th-TH');
+        }
+        if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = setupVoice; }
+
+        document.addEventListener('click', function unlockVoice() {
+            if(!voiceUnlocked && 'speechSynthesis' in window) {
+                let u = new SpeechSynthesisUtterance('');
+                window.speechSynthesis.speak(u);
+                voiceUnlocked = true;
+                document.removeEventListener('click', unlockVoice);
+            }
+        });
+
+        function speak(text) { 
+            if ('speechSynthesis' in window) { 
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text); 
+                u.lang = 'th-TH'; 
+                if(thVoice) u.voice = thVoice;
+                u.rate = 1.0; u.pitch = 1.1;
+                window.speechSynthesis.speak(u); 
+            } 
+        }
+
+        // --- Firebase Initialization & Realtime Sync ---
         async function authenticate() {
             try {
                 const cred = await signInAnonymously(auth);
@@ -532,7 +551,7 @@
             };
         }
 
-        // --- แก้ปัญหาปุ่มค้างด้วย Promise.race (Anti-Freeze Firebase) ---
+        // --- FIRESTORE: SAVE PATIENT (Anti-Freeze) ---
         DOM.saveBasicPatientBtn.addEventListener('click', () => {
             if(!DOM.patientHN.value || !DOM.patientName.value) { return showAlert('ข้อมูลไม่ครบ', 'กรุณากรอก HN และ ชื่อ-สกุล ผู้ป่วย'); }
             
@@ -542,9 +561,9 @@
             const data = getPatientFormData();
             if(!activePatientId) activePatientId = 'pat_' + Date.now();
             
-            // รอ Firebase เซฟเต็มที่ 4 วินาที ถ้าเกินแปลว่าค้าง ให้ตัดจบและพาเข้าหน้า CPR เลย
-            const fbSavePromise = set(ref(db, `patients/${activePatientId}/info`), data);
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 4000));
+            const docRef = doc(db, "patients", activePatientId);
+            const fbSavePromise = setDoc(docRef, { info: data }, { merge: true });
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 3000));
 
             Promise.race([fbSavePromise, timeoutPromise])
                 .then(() => {
@@ -553,13 +572,10 @@
                     switchModule('tab-home'); 
                 })
                 .catch((e) => {
-                    // หากเน็ตหลุดหรือฐานข้อมูลบล็อก ก็บังคับไปต่อ
                     activePatientData = data;
                     updateActivePatientUI();
                     switchModule('tab-home');
-                    if (e.message === 'TIMEOUT') {
-                        console.warn("Firebase Response Timeout - Proceeding anyway.");
-                    }
+                    if(e.message !== 'TIMEOUT') console.error("Firestore Save Error:", e);
                 })
                 .finally(() => {
                     DOM.saveBasicPatientBtn.innerHTML = '<i class="fa-solid fa-user-check mr-2"></i>บันทึกผู้ป่วย & เริ่ม CPR';
@@ -579,7 +595,7 @@
             tbody.innerHTML = '';
             
             if(patientsObj && Object.keys(patientsObj).length > 0) {
-                const sorted = Object.entries(patientsObj).filter(([id, data]) => data.info).sort((a,b) => b[1].info.updatedAt - a[1].info.updatedAt);
+                const sorted = Object.entries(patientsObj).sort((a,b) => b[1].info.updatedAt - a[1].info.updatedAt);
                 sorted.forEach(([id, data]) => {
                     const info = data.info;
                     const dateStr = new Date(info.updatedAt).toLocaleDateString('th-TH');
@@ -602,18 +618,26 @@
             }
         }
 
+        // --- FIRESTORE: LOAD DATA ---
         function loadRegistryData() {
-            onValue(ref(db, 'patients'), (snapshot) => {
-                renderRegistryTable(snapshot.val());
+            onSnapshot(collection(db, "patients"), (snapshot) => {
+                let patientsObj = {};
+                snapshot.forEach((doc) => {
+                    if(doc.data().info) patientsObj[doc.id] = doc.data();
+                });
+                renderRegistryTable(patientsObj);
+            }, (error) => {
+                console.warn("Firestore Read Failed:", error.message);
+                const tbody = document.getElementById('registryTableBody');
+                if(tbody) tbody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500">การเชื่อมต่อขัดข้อง (ออฟไลน์)</td></tr>';
             });
         }
 
         window.loadPatientToForm = async function(id) {
             try {
-                const snap = await get(ref(db, `patients/${id}/info`));
-                const data = snap.val();
-                if(data) {
-                    activePatientId = id; activePatientData = data;
+                const docSnap = await getDoc(doc(db, "patients", id));
+                if (docSnap.exists() && docSnap.data().info) {
+                    activePatientId = id; activePatientData = docSnap.data().info;
                     updateActivePatientUI();
                     switchModule('tab-home');
                 }
@@ -622,12 +646,12 @@
 
         window.deletePatient = async function(id) {
             if(confirm('ยืนยันลบผู้ป่วยรายนี้ และประวัติทั้งหมดออกจากระบบ?')) {
-                remove(ref(db, `patients/${id}`)).catch(e=>console.error(e));
+                deleteDoc(doc(db, "patients", id)).catch(e=>console.error(e));
                 if (activePatientId === id) { activePatientId=null; activePatientData=null; updateActivePatientUI(); }
             }
         };
 
-        // --- แก้ปัญหาปุ่มค้างตอนบันทึกเหตุการณ์ ---
+        // --- FIRESTORE: SAVE EVENTS (Anti-Freeze & Auto Close) ---
         DOM.saveEventToPatientBtn.addEventListener('click', () => {
             if (!activePatientId) return showAlert('ไม่พบผู้ป่วย', 'กรุณากลับไปหน้าทะเบียน เพื่อเลือกผู้ป่วยก่อนบันทึกเหตุการณ์');
             
@@ -637,8 +661,10 @@
             const eventData = getCurrentEventData();
             const newEventId = 'evt_' + Date.now();
             
-            const fbSavePromise = set(ref(db, `patients/${activePatientId}/events/${newEventId}`), eventData);
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 4000));
+            // บันทึก Log เข้าระบบ Firestore Subcollection
+            const eventRef = doc(collection(db, `patients/${activePatientId}/events`), newEventId);
+            const fbSavePromise = setDoc(eventRef, eventData);
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 3000));
 
             Promise.race([fbSavePromise, timeoutPromise])
                 .then(() => {
@@ -647,7 +673,7 @@
                 })
                 .catch((e) => {
                     document.getElementById('summaryModal').classList.remove('visible');
-                    showAlert('แจ้งเตือน', 'ปิดหน้าต่างสรุปแล้ว แต่อินเทอร์เน็ตอาจขัดข้อง');
+                    showAlert('แจ้งเตือน', 'ปิดหน้าต่างสรุปแล้ว แต่อินเทอร์เน็ตอาจขัดข้อง ข้อมูลจะซิงค์ภายหลัง');
                 })
                 .finally(() => {
                     DOM.saveEventToPatientBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-2"></i>บันทึกเหตุการณ์ทั้งหมดลงทะเบียนผู้ป่วย';
@@ -689,38 +715,6 @@
 
         function formatTime(s) { const m = Math.floor(s/60); const sec = s%60; return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`; }
         
-        // --- แกัปัญหาเสียงหาย (Voice Unlocker) ---
-        let thVoice = null;
-        let isVoiceInitialized = false;
-
-        function setupVoice() {
-            let voices = window.speechSynthesis.getVoices();
-            thVoice = voices.find(v => v.lang === 'th-TH' && (v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Siri'))) || voices.find(v => v.lang === 'th-TH');
-        }
-        if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = setupVoice; }
-
-        // ปลดล็อกระบบเสียงเมื่อผู้ใช้แตะหน้าจอครั้งแรก (สำหรับ iOS / Safari)
-        document.addEventListener('click', function unlockVoice() {
-            if(!isVoiceInitialized && 'speechSynthesis' in window) {
-                let u = new SpeechSynthesisUtterance('');
-                window.speechSynthesis.speak(u);
-                isVoiceInitialized = true;
-                document.removeEventListener('click', unlockVoice);
-            }
-        });
-
-        function speak(text) { 
-            if ('speechSynthesis' in window) { 
-                window.speechSynthesis.cancel(); // ตัดเสียงเก่าที่ค้าง
-                const u = new SpeechSynthesisUtterance(text); 
-                u.lang = 'th-TH'; 
-                if(thVoice) u.voice = thVoice;
-                u.rate = 1.0; 
-                u.pitch = 1.1;
-                window.speechSynthesis.speak(u); 
-            } 
-        }
-
         setInterval(() => { if(DOM.currentTime) DOM.currentTime.textContent = new Date().toTimeString().split(' ')[0]; }, 1000);
 
         function startOverallCountdown() { 
@@ -945,9 +939,6 @@
             finally { content.style.maxHeight = originalMaxHeight; content.style.overflowY = originalOverflow; }
         });
 
-        // -------------------------------------------------------------
-        // PDF & CSV Engines
-        // -------------------------------------------------------------
         async function createPDF(pInfo, ev, filename) {
             const container = document.createElement('div');
             container.style.position = 'absolute'; container.style.left = '-9999px'; container.style.top = '0';
@@ -1041,32 +1032,33 @@
             createCSV(pInfo, getCurrentEventData(), `CPR_Record_${pInfo.hn}.csv`);
         });
 
+        // --- FIRESTORE: FETCH EVENTS FOR PDF/CSV ---
         window.downloadPatientPDF = async function(id) {
             try {
-                const snap = await get(ref(db, `patients/${id}`));
-                const data = snap.val();
-                if(data && data.info) {
+                const snap = await getDoc(doc(db, "patients", id));
+                if(snap.exists() && snap.data().info) {
+                    const info = snap.data().info;
+                    const eventsRef = collection(db, `patients/${id}/events`);
+                    const q = query(eventsRef, orderBy("timestamp", "desc"), limit(1));
+                    const eventSnap = await getDocs(q);
                     let ev = {};
-                    if(data.events) {
-                        const keys = Object.keys(data.events).sort((a,b) => b.localeCompare(a));
-                        ev = data.events[keys[0]]; 
-                    }
-                    await createPDF(data.info, ev, `CPR_Record_${data.info.hn}.pdf`);
+                    eventSnap.forEach((doc) => { ev = doc.data(); });
+                    await createPDF(info, ev, `CPR_Record_${info.hn}.pdf`);
                 } else { showAlert('แจ้งเตือน', 'ไม่พบข้อมูล'); }
             } catch(e) { console.error(e); showAlert('แจ้งเตือน', 'ข้อผิดพลาดการดึงข้อมูล'); }
         };
 
         window.downloadPatientCSV = async function(id) {
             try {
-                const snap = await get(ref(db, `patients/${id}`));
-                const data = snap.val();
-                if(data && data.info) {
+                const snap = await getDoc(doc(db, "patients", id));
+                if(snap.exists() && snap.data().info) {
+                    const info = snap.data().info;
+                    const eventsRef = collection(db, `patients/${id}/events`);
+                    const q = query(eventsRef, orderBy("timestamp", "desc"), limit(1));
+                    const eventSnap = await getDocs(q);
                     let ev = {};
-                    if(data.events) {
-                        const keys = Object.keys(data.events).sort((a,b) => b.localeCompare(a));
-                        ev = data.events[keys[0]];
-                    }
-                    createCSV(data.info, ev, `CPR_Record_${data.info.hn}.csv`);
+                    eventSnap.forEach((doc) => { ev = doc.data(); });
+                    createCSV(info, ev, `CPR_Record_${info.hn}.csv`);
                 } else { showAlert('แจ้งเตือน', 'ไม่พบข้อมูล'); }
             } catch(e) { console.error(e); }
         };
