@@ -8,8 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -53,6 +51,7 @@
         .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
         .btn-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
         .btn-orange { background: linear-gradient(135deg, #f97316, #ea580c); color: white; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3); }
+        .btn-emerald { background: linear-gradient(135deg, #059669, #047857); color: white; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3); }
         .btn-secondary { background: rgba(255, 255, 255, 0.7); color: #475569; border: 1px solid rgba(255, 255, 255, 0.9); }
         
         .timer-display { font-size: clamp(3rem, 12vw, 5rem); font-weight: 800; text-align: center; margin-bottom: 0.5rem; line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.05); }
@@ -97,9 +96,7 @@
 
     <div class="container mx-auto px-4 !pb-0 hidden md:block">
         <header class="text-center py-4 mt-2">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
-                <span class="text-indigo-600">KS</span>CPR
-            </h1>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight"><span class="text-indigo-600">KS</span>CPR</h1>
             <p class="text-slate-500 font-medium">Smart Resuscitation Assistant</p>
         </header>
         <nav class="desktop-nav">
@@ -274,7 +271,7 @@
                             <tr><th>HN</th><th>ชื่อ-สกุล</th><th>วันที่บันทึก</th><th>จัดการ (โหลด PDF/CSV)</th></tr>
                         </thead>
                         <tbody id="registryTableBody">
-                            <tr><td colspan="4" class="text-center text-slate-500">กำลังเชื่อมต่อฐานข้อมูล...</td></tr>
+                            <tr><td colspan="4" class="text-center text-slate-500">ไม่มีข้อมูล...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -283,18 +280,91 @@
 
         <div id="tab-guideline" class="tab-pane">
             <div class="glass-card bg-gradient-to-br from-white to-red-50">
-                <div class="flex items-center justify-between mb-4 border-b pb-4">
-                    <h2 class="text-2xl font-bold text-red-700"><i class="fa-solid fa-book-medical mr-2"></i> AHA CPR 2020/2025</h2>
+                <div class="flex items-center justify-between mb-6 border-b border-red-200 pb-4">
+                    <h2 class="text-2xl font-bold text-red-700"><i class="fa-solid fa-book-medical mr-2"></i> AHA CPR & ECC Guidelines</h2>
                     <div class="pulse-circle"><i class="fa-solid fa-heart heart-anim text-4xl"></i></div>
                 </div>
-                <div class="space-y-4">
-                    <div class="bg-white p-5 rounded-xl border-l-4 border-red-500">
-                        <h3 class="font-bold text-lg text-slate-800 mb-3">High-Quality CPR</h3>
-                        <ul class="list-disc pl-5 text-slate-700 space-y-1"><li>Push hard, push fast (5-6 ซม.)</li><li>Rate: 100-120 /min</li><li>Chest recoil สุด</li><li>เปลี่ยนคนทุก 2 นาที</li></ul>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-5 rounded-xl border-l-4 border-red-500 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-hands-praying text-red-500 mr-2"></i>High-Quality CPR</h3>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                            <li><strong>Push hard, push fast:</strong> กดลึกอย่างน้อย 2 นิ้ว (5 ซม.) แต่ไม่เกิน 2.4 นิ้ว (6 ซม.)</li>
+                            <li><strong>Rate:</strong> อัตรา 100-120 ครั้งต่อนาที</li>
+                            <li><strong>Chest recoil:</strong> ปล่อยให้หน้าอกคืนตัวสุดหลังจากการกดแต่ละครั้ง ห้ามพิงหน้าอก</li>
+                            <li><strong>Minimize interruptions:</strong> ลดการหยุดชะงักให้น้อยที่สุด (ไม่ควรหยุดปั๊มเกิน 10 วินาที)</li>
+                            <li><strong>Ventilation:</strong> อัตราส่วน 30:2 (หากยังไม่ใส่ท่อทางเดินหายใจขั้นสูง)</li>
+                            <li><strong>Change compressor:</strong> เปลี่ยนคนปั๊มทุก 2 นาที หรือเมื่อเหนื่อย</li>
+                        </ul>
                     </div>
+
+                    <div class="bg-white p-5 rounded-xl border-l-4 border-yellow-500 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-bolt text-yellow-500 mr-2"></i>Shock Energy (Defibrillation)</h3>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                            <li><strong>Biphasic:</strong> คำแนะนำผู้ผลิต (เช่น 120-200 J) หากไม่ทราบให้ใช้ค่าสูงสุดที่มี</li>
+                            <li>ช็อตครั้งต่อไป ควรใช้พลังงานเท่าเดิม หรือสูงกว่า</li>
+                            <li><strong>Monophasic:</strong> 360 J</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border-l-4 border-purple-500 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-syringe text-purple-500 mr-2"></i>Drug Therapy (การให้ยา)</h3>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                            <li><strong>Epinephrine:</strong> 1 mg IV/IO ทุก 3-5 นาที</li>
+                            <li><strong>Amiodarone (สำหรับ VF/pVT):</strong><br>
+                                - Dose แรก: 300 mg bolus<br>
+                                - Dose ที่สอง: 150 mg
+                            </li>
+                            <li><strong>Lidocaine (ใช้แทน Amiodarone ได้):</strong><br>
+                                - Dose แรก: 1 - 1.5 mg/kg<br>
+                                - Dose ที่สอง: 0.5 - 0.75 mg/kg
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border-l-4 border-blue-500 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-lungs text-blue-500 mr-2"></i>Advanced Airway</h3>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                            <li>ใส่ Endotracheal intubation หรือ Supraglottic advanced airway</li>
+                            <li>ใช้ Waveform capnography หรือ capnometry เพื่อยืนยันและติดตามตำแหน่งท่อ</li>
+                            <li><strong>เมื่อใส่ท่อแล้ว:</strong> ให้ช่วยหายใจ 1 ครั้ง ทุกๆ 6 วินาที (10 ครั้ง/นาที) พร้อมกับการทำ CPR ต่อเนื่องโดยไม่ต้องหยุดรอ</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border-l-4 border-slate-700 shadow-sm md:col-span-2">
+                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-magnifying-glass text-slate-700 mr-2"></i>Reversible Causes (ค้นหาและรักษา 5H 5T)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700">
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>H</strong>ypovolemia (สารน้ำในร่างกายต่ำ)</li>
+                                <li><strong>H</strong>ypoxia (ขาดออกซิเจน)</li>
+                                <li><strong>H</strong>ydrogen ion (ภาวะกรดเป็นพิษ)</li>
+                                <li><strong>H</strong>ypo-/Hyperkalemia (โพแทสเซียมผิดปกติ)</li>
+                                <li><strong>H</strong>ypothermia (อุณหภูมิร่างกายต่ำ)</li>
+                            </ul>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>T</strong>ension pneumothorax (ภาวะลมในช่องเยื่อหุ้มปอด)</li>
+                                <li><strong>T</strong>amponade, cardiac (ภาวะบีบรัดหัวใจ)</li>
+                                <li><strong>T</strong>oxins (สารพิษ)</li>
+                                <li><strong>T</strong>hrombosis, pulmonary (ลิ่มเลือดอุดกั้นในปอด)</li>
+                                <li><strong>T</strong>hrombosis, coronary (ลิ่มเลือดอุดตันหลอดเลือดหัวใจ)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-emerald-50 p-5 rounded-xl border-l-4 border-emerald-500 shadow-sm md:col-span-2">
+                        <h3 class="font-bold text-lg text-emerald-800 mb-3"><i class="fa-solid fa-heart-circle-check text-emerald-500 mr-2"></i>Post-Cardiac Arrest Care (หลัง ROSC)</h3>
+                        <ul class="list-disc pl-5 text-sm text-emerald-900 space-y-2">
+                            <li>รักษาระดับ Oxygen saturation (SpO2) ให้มากกว่าหรือเท่ากับ 92-98%</li>
+                            <li>รักษาความดันโลหิต Systolic > 90 mmHg หรือ MAP > 65 mmHg</li>
+                            <li>พิจารณา Targeted Temperature Management (TTM) ที่ 32-36 °C เป็นเวลาอย่างน้อย 24 ชม. หากผู้ป่วยยังไม่ตื่นทำตามคำสั่งได้</li>
+                            <li>ทำ 12-lead ECG ทันที หากพบ STEMI ควรส่งทำ PCI</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
+
     </div>
 
     <nav class="bottom-nav">
@@ -336,12 +406,16 @@
         </div>
     </div>
 
+    <div id="reportContainerWrapper" style="position: absolute; left: -9999px; top: auto; width: 210mm; background: white; color: black; z-index: -1;">
+        <div id="reportContent"></div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, deleteDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // === ใช้ Config ชุดเดิม แต่เปลี่ยนไปต่อ FIRESTORE แทน ===
+        // === ใช้ Config ของผู้ใช้ตรงๆ ===
         const firebaseConfig = {
             apiKey: "AIzaSyAyEudrvfW4jTk8_l8blsQYLItvh2iXtkM",
             authDomain: "cprapp-90ac5.firebaseapp.com",
@@ -353,7 +427,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app); // ใช้ FIRESTORE ตามที่คุณแจ้ง
+        const db = getFirestore(app); 
         
         let userId = null;
         let activePatientId = null;
@@ -366,7 +440,6 @@
         let adrenalineDose = 0;
         let localMedications = [], localEcgs = [];
 
-        // DOM Mapping
         const DOM = {
             activePatientNameDisplay: document.getElementById('activePatientNameDisplay'),
             confirmDeathBtn: document.getElementById('confirmDeathBtn'),
@@ -453,7 +526,7 @@
         }
         document.querySelectorAll('.nav-item, .nav-item-desktop').forEach(item => { item.addEventListener('click', function() { switchModule(this.getAttribute('data-target')); }); });
 
-        // --- แก้ปัญหาเสียงหาย (ปลดล็อกเมื่อแตะจอ) ---
+        // --- แกัปัญหาเสียงหาย (Voice Unlocker) ---
         let thVoice = null;
         let voiceUnlocked = false;
 
@@ -474,22 +547,34 @@
 
         function speak(text) { 
             if ('speechSynthesis' in window) { 
-                window.speechSynthesis.cancel();
+                window.speechSynthesis.cancel(); 
                 const u = new SpeechSynthesisUtterance(text); 
                 u.lang = 'th-TH'; 
                 if(thVoice) u.voice = thVoice;
-                u.rate = 1.0; u.pitch = 1.1;
+                u.rate = 1.0; 
+                u.pitch = 1.1;
                 window.speechSynthesis.speak(u); 
             } 
         }
 
-        // --- Firebase Initialization & Realtime Sync ---
+        // --- ระบบออฟไลน์ LocalStorage ควบคู่ (Hybrid) ---
+        const LOCAL_DB_KEY = 'kscpr_offline_patients';
+        function getLocalPatients() {
+            try { return JSON.parse(localStorage.getItem(LOCAL_DB_KEY) || '{}'); } 
+            catch(e) { return {}; }
+        }
+        function saveToLocalPatients(id, data) {
+            const db = getLocalPatients();
+            db[id] = { info: data, ...db[id] }; 
+            localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(db));
+        }
+
         async function authenticate() {
             try {
                 const cred = await signInAnonymously(auth);
                 userId = cred.user.uid;
             } catch (error) { 
-                console.warn("Auth failed", error);
+                console.warn("Auth failed, using offline mode.");
             }
             loadRegistryData(); 
         }
@@ -551,7 +636,7 @@
             };
         }
 
-        // --- FIRESTORE: SAVE PATIENT (Anti-Freeze) ---
+        // --- FIRESTORE: SAVE PATIENT (Hybrid & Anti-Freeze) ---
         DOM.saveBasicPatientBtn.addEventListener('click', () => {
             if(!DOM.patientHN.value || !DOM.patientName.value) { return showAlert('ข้อมูลไม่ครบ', 'กรุณากรอก HN และ ชื่อ-สกุล ผู้ป่วย'); }
             
@@ -561,26 +646,24 @@
             const data = getPatientFormData();
             if(!activePatientId) activePatientId = 'pat_' + Date.now();
             
-            const docRef = doc(db, "patients", activePatientId);
-            const fbSavePromise = setDoc(docRef, { info: data }, { merge: true });
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 3000));
+            // เซฟลงเครื่องเพื่อรับประกันว่าตารางไม่โล่งแน่ๆ
+            saveToLocalPatients(activePatientId, data);
+            
+            // อัปเดตตาราง UI ทันที
+            renderRegistryTable(getLocalPatients());
 
-            Promise.race([fbSavePromise, timeoutPromise])
-                .then(() => {
-                    activePatientData = data;
-                    updateActivePatientUI();
-                    switchModule('tab-home'); 
-                })
-                .catch((e) => {
-                    activePatientData = data;
-                    updateActivePatientUI();
-                    switchModule('tab-home');
-                    if(e.message !== 'TIMEOUT') console.error("Firestore Save Error:", e);
-                })
-                .finally(() => {
-                    DOM.saveBasicPatientBtn.innerHTML = '<i class="fa-solid fa-user-check mr-2"></i>บันทึกผู้ป่วย & เริ่ม CPR';
-                    DOM.saveBasicPatientBtn.disabled = false;
-                });
+            // บังคับเซฟ Firebase (ถ้าเน็ตหลุดก็จะผ่าน catch ไป)
+            const docRef = doc(db, "patients", activePatientId);
+            setDoc(docRef, { info: data }, { merge: true }).catch(e => console.warn(e));
+            
+            // ข้ามไปหน้า CPR เลย ไม่ต้องรอ Firebase (แก้ปุ่มค้าง 100%)
+            setTimeout(() => {
+                activePatientData = data;
+                updateActivePatientUI();
+                switchModule('tab-home'); 
+                DOM.saveBasicPatientBtn.innerHTML = '<i class="fa-solid fa-user-check mr-2"></i>บันทึกผู้ป่วย & เริ่ม CPR';
+                DOM.saveBasicPatientBtn.disabled = false;
+            }, 500);
         });
 
         DOM.clearPatientBtn.addEventListener('click', () => {
@@ -595,7 +678,7 @@
             tbody.innerHTML = '';
             
             if(patientsObj && Object.keys(patientsObj).length > 0) {
-                const sorted = Object.entries(patientsObj).sort((a,b) => b[1].info.updatedAt - a[1].info.updatedAt);
+                const sorted = Object.entries(patientsObj).filter(([id, data]) => data.info).sort((a,b) => b[1].info.updatedAt - a[1].info.updatedAt);
                 sorted.forEach(([id, data]) => {
                     const info = data.info;
                     const dateStr = new Date(info.updatedAt).toLocaleDateString('th-TH');
@@ -618,40 +701,48 @@
             }
         }
 
-        // --- FIRESTORE: LOAD DATA ---
+        // --- FIRESTORE: LOAD DATA (Hybrid) ---
         function loadRegistryData() {
+            // โหลดจาก Local Storage มาแสดงทันทีก่อน
+            renderRegistryTable(getLocalPatients());
+
+            // เชื่อม Firestore
             onSnapshot(collection(db, "patients"), (snapshot) => {
-                let patientsObj = {};
+                let patientsObj = getLocalPatients(); // ดึงของเก่าในเครื่องมา Merge
                 snapshot.forEach((doc) => {
                     if(doc.data().info) patientsObj[doc.id] = doc.data();
                 });
+                localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(patientsObj)); // เซฟทับให้ Local อัปเดต
                 renderRegistryTable(patientsObj);
             }, (error) => {
-                console.warn("Firestore Read Failed:", error.message);
-                const tbody = document.getElementById('registryTableBody');
-                if(tbody) tbody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500">การเชื่อมต่อขัดข้อง (ออฟไลน์)</td></tr>';
+                console.warn("Firestore Read Failed, using Local DB:", error.message);
             });
         }
 
         window.loadPatientToForm = async function(id) {
-            try {
-                const docSnap = await getDoc(doc(db, "patients", id));
-                if (docSnap.exists() && docSnap.data().info) {
-                    activePatientId = id; activePatientData = docSnap.data().info;
-                    updateActivePatientUI();
-                    switchModule('tab-home');
-                }
-            } catch(e) { console.error(e); }
+            const localData = getLocalPatients();
+            if(localData[id] && localData[id].info) {
+                activePatientId = id; activePatientData = localData[id].info;
+                updateActivePatientUI();
+                switchModule('tab-home');
+            }
         };
 
         window.deletePatient = async function(id) {
             if(confirm('ยืนยันลบผู้ป่วยรายนี้ และประวัติทั้งหมดออกจากระบบ?')) {
-                deleteDoc(doc(db, "patients", id)).catch(e=>console.error(e));
+                // ลบในเครื่อง
+                let localDb = getLocalPatients();
+                delete localDb[id];
+                localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
+                renderRegistryTable(localDb);
+
+                // ลบขึ้น Cloud
+                deleteDoc(doc(db, "patients", id)).catch(e=>console.warn("Cloud delete failed"));
                 if (activePatientId === id) { activePatientId=null; activePatientData=null; updateActivePatientUI(); }
             }
         };
 
-        // --- FIRESTORE: SAVE EVENTS (Anti-Freeze & Auto Close) ---
+        // --- FIRESTORE: SAVE EVENTS (Hybrid) ---
         DOM.saveEventToPatientBtn.addEventListener('click', () => {
             if (!activePatientId) return showAlert('ไม่พบผู้ป่วย', 'กรุณากลับไปหน้าทะเบียน เพื่อเลือกผู้ป่วยก่อนบันทึกเหตุการณ์');
             
@@ -661,24 +752,23 @@
             const eventData = getCurrentEventData();
             const newEventId = 'evt_' + Date.now();
             
-            // บันทึก Log เข้าระบบ Firestore Subcollection
-            const eventRef = doc(collection(db, `patients/${activePatientId}/events`), newEventId);
-            const fbSavePromise = setDoc(eventRef, eventData);
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 3000));
+            // เซฟลง Local Storage
+            let localDb = getLocalPatients();
+            if(!localDb[activePatientId].events) localDb[activePatientId].events = {};
+            localDb[activePatientId].events[newEventId] = eventData;
+            localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
 
-            Promise.race([fbSavePromise, timeoutPromise])
-                .then(() => {
-                    document.getElementById('summaryModal').classList.remove('visible');
-                    showAlert('สำเร็จ', 'บันทึกเหตุการณ์การ CPR เข้าสู่ประวัติผู้ป่วยเรียบร้อยแล้ว');
-                })
-                .catch((e) => {
-                    document.getElementById('summaryModal').classList.remove('visible');
-                    showAlert('แจ้งเตือน', 'ปิดหน้าต่างสรุปแล้ว แต่อินเทอร์เน็ตอาจขัดข้อง ข้อมูลจะซิงค์ภายหลัง');
-                })
-                .finally(() => {
-                    DOM.saveEventToPatientBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-2"></i>บันทึกเหตุการณ์ทั้งหมดลงทะเบียนผู้ป่วย';
-                    DOM.saveEventToPatientBtn.disabled = false;
-                });
+            // โยนขึ้น Cloud 
+            const eventRef = doc(collection(db, `patients/${activePatientId}/events`), newEventId);
+            setDoc(eventRef, eventData).catch(e => console.warn(e));
+
+            // ปิด Modal ทันที
+            setTimeout(() => {
+                document.getElementById('summaryModal').classList.remove('visible');
+                showAlert('สำเร็จ', 'บันทึกเหตุการณ์การ CPR เข้าสู่ประวัติผู้ป่วยเรียบร้อยแล้ว');
+                DOM.saveEventToPatientBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-2"></i>บันทึกเหตุการณ์ทั้งหมดลงทะเบียนผู้ป่วย';
+                DOM.saveEventToPatientBtn.disabled = false;
+            }, 500);
         });
 
         // --- Utilities ---
@@ -1032,33 +1122,31 @@
             createCSV(pInfo, getCurrentEventData(), `CPR_Record_${pInfo.hn}.csv`);
         });
 
-        // --- FIRESTORE: FETCH EVENTS FOR PDF/CSV ---
+        // --- ดึงข้อมูลจาก LocalDB แทน (กันเหนียว) ในตอนทำ PDF/CSV ---
         window.downloadPatientPDF = async function(id) {
             try {
-                const snap = await getDoc(doc(db, "patients", id));
-                if(snap.exists() && snap.data().info) {
-                    const info = snap.data().info;
-                    const eventsRef = collection(db, `patients/${id}/events`);
-                    const q = query(eventsRef, orderBy("timestamp", "desc"), limit(1));
-                    const eventSnap = await getDocs(q);
+                const localDb = getLocalPatients();
+                if(localDb[id] && localDb[id].info) {
                     let ev = {};
-                    eventSnap.forEach((doc) => { ev = doc.data(); });
-                    await createPDF(info, ev, `CPR_Record_${info.hn}.pdf`);
+                    if(localDb[id].events) {
+                        const keys = Object.keys(localDb[id].events).sort((a,b) => b.localeCompare(a));
+                        ev = localDb[id].events[keys[0]]; 
+                    }
+                    await createPDF(localDb[id].info, ev, `CPR_Record_${localDb[id].info.hn}.pdf`);
                 } else { showAlert('แจ้งเตือน', 'ไม่พบข้อมูล'); }
-            } catch(e) { console.error(e); showAlert('แจ้งเตือน', 'ข้อผิดพลาดการดึงข้อมูล'); }
+            } catch(e) { console.error(e); }
         };
 
         window.downloadPatientCSV = async function(id) {
             try {
-                const snap = await getDoc(doc(db, "patients", id));
-                if(snap.exists() && snap.data().info) {
-                    const info = snap.data().info;
-                    const eventsRef = collection(db, `patients/${id}/events`);
-                    const q = query(eventsRef, orderBy("timestamp", "desc"), limit(1));
-                    const eventSnap = await getDocs(q);
+                const localDb = getLocalPatients();
+                if(localDb[id] && localDb[id].info) {
                     let ev = {};
-                    eventSnap.forEach((doc) => { ev = doc.data(); });
-                    createCSV(info, ev, `CPR_Record_${info.hn}.csv`);
+                    if(localDb[id].events) {
+                        const keys = Object.keys(localDb[id].events).sort((a,b) => b.localeCompare(a));
+                        ev = localDb[id].events[keys[0]];
+                    }
+                    createCSV(localDb[id].info, ev, `CPR_Record_${localDb[id].info.hn}.csv`);
                 } else { showAlert('แจ้งเตือน', 'ไม่พบข้อมูล'); }
             } catch(e) { console.error(e); }
         };
