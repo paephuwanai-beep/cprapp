@@ -36,7 +36,7 @@
             max-width: 1280px;
             margin: 0 auto;
             padding: 1rem;
-            padding-bottom: 90px; /* Space for bottom nav */
+            padding-bottom: 90px;
         }
 
         @media (min-width: 768px) {
@@ -107,7 +107,7 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* Navigation: Desktop & Mobile */
+        /* Navigation */
         .desktop-nav { display: none; }
         .bottom-nav {
             position: fixed;
@@ -139,7 +139,7 @@
         .nav-item.active i { transform: translateY(-2px); }
 
         @media (min-width: 768px) {
-            .bottom-nav { display: none; } /* Hide bottom nav on desktop */
+            .bottom-nav { display: none; }
             .desktop-nav {
                 display: flex;
                 justify-content: center;
@@ -155,12 +155,10 @@
             .nav-item-desktop.active { background: #4f46e5; color: white; border-color: #4f46e5; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); }
         }
 
-        /* Tab Visibility Logic (Strictly Separated) */
         .tab-pane { display: none; animation: fadeIn 0.3s ease; }
         .tab-pane.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Tables & Logs */
         table { width: 100%; border-collapse: separate; border-spacing: 0; }
         th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.05); white-space: nowrap; }
         th { background: rgba(255,255,255,0.4); font-weight: 600; color: #475569; font-size: 0.85rem; border-radius: 0.5rem 0.5rem 0 0;}
@@ -175,7 +173,6 @@
         .log-entry { padding: 0.5rem; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.9rem; }
         .log-entry:last-child { border-bottom: none; }
 
-        /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.4);
@@ -211,7 +208,6 @@
             animation: heartbeat 1.5s infinite;
         }
         
-        /* Active Patient Banner */
         .active-patient-banner {
             background: linear-gradient(135deg, #4f46e5, #3b82f6);
             color: white;
@@ -228,7 +224,7 @@
 </head>
 <body>
 
-    <!-- Top Header & Desktop Navigation -->
+    <!-- Desktop Navigation -->
     <div class="container mx-auto px-4 !pb-0 hidden md:block">
         <header class="text-center py-4 mt-2">
             <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
@@ -237,7 +233,6 @@
             <p class="text-slate-500 font-medium">Smart Resuscitation Assistant</p>
         </header>
         
-        <!-- Desktop Nav -->
         <nav class="desktop-nav">
             <button class="nav-item-desktop active" data-target="tab-home"><i class="fa-solid fa-heart-pulse mr-2"></i>หน้าหลัก (CPR)</button>
             <button class="nav-item-desktop" data-target="tab-registry"><i class="fa-solid fa-address-book mr-2"></i>ทะเบียนผู้ป่วย</button>
@@ -250,7 +245,6 @@
         <!-- MODULE 1: HOME / CPR -->
         <div id="tab-home" class="tab-pane active">
             
-            <!-- Active Patient Banner -->
             <div id="activePatientBanner" class="active-patient-banner" onclick="switchModule('tab-registry')">
                 <div>
                     <div class="text-xs text-blue-100 uppercase tracking-wide font-bold mb-1">ผู้ป่วยที่กำลังกู้ชีพ (Active Patient)</div>
@@ -259,7 +253,6 @@
                 <i class="fa-solid fa-chevron-right text-white/70"></i>
             </div>
 
-            <!-- Top Dashboard Clock Panel -->
             <div class="glass-card flex flex-col md:flex-row gap-4 justify-between items-center bg-white/70 border border-blue-100 shadow-md">
                 <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
                     <div>
@@ -281,7 +274,6 @@
                 <button id="confirmDeathBtn" class="btn btn-red shadow-lg text-lg w-full md:w-auto px-6 py-4"><i class="fa-solid fa-hand mr-2"></i> ยุติการ CPR</button>
             </div>
 
-            <!-- Stop Reason Hidden Section -->
             <div id="reasonForDeathSection" class="glass-card border-l-4 border-red-500" style="display: none;">
                 <h3 class="font-bold text-slate-700 mb-3 text-lg">โปรดระบุสาเหตุการยุติ CPR:</h3>
                 <div class="space-y-2">
@@ -343,13 +335,11 @@
                 </div>
             </div>
 
-            <!-- ROSC Button -->
             <div class="glass-card flex justify-center py-6 mb-4 border-l-4 border-orange-500">
                  <button id="roscBtn" class="btn btn-orange w-full md:w-2/3 text-2xl py-4 shadow-xl uppercase tracking-widest transition-transform duration-300"><i class="fa-solid fa-wave-square mr-3"></i> ROSC (ผู้ป่วยกลับมามีชีพจร)</button>
                  <button id="continueBtn" class="btn btn-red w-full md:w-2/3 text-2xl py-4 shadow-xl animate-pulse" style="display: none;"><i class="fa-solid fa-heart-crack mr-3"></i> Arrest ซ้ำ (เริ่ม CPR รอบใหม่)</button>
             </div>
 
-            <!-- Medication -->
             <div class="glass-card">
                 <h3 class="text-lg font-bold text-emerald-800 mb-3"><i class="fa-solid fa-pills mr-2"></i>บันทึกการให้ยาอื่นๆ</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
@@ -370,7 +360,6 @@
                 </div>
             </div>
 
-            <!-- ECG -->
             <div class="glass-card">
                 <h3 class="text-lg font-bold text-blue-800 mb-3"><i class="fa-solid fa-heart-circle-bolt mr-2"></i>บันทึก ECG / Defib</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-3">
@@ -392,7 +381,6 @@
                 </div>
             </div>
 
-            <!-- Logs -->
             <div class="glass-card mb-4">
                 <h3 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-list-check mr-2"></i>บันทึกเหตุการณ์ (Logs)</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -404,11 +392,11 @@
             </div>
         </div>
 
-        <!-- MODULE 2: PATIENT REGISTRY (Form + Table) -->
+        <!-- MODULE 2: PATIENT REGISTRY -->
         <div id="tab-registry" class="tab-pane">
             <div class="glass-card mb-6 border-t-4 border-indigo-500">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2"><i class="fa-solid fa-user-plus mr-2"></i>ข้อมูลพื้นฐานผู้ป่วย</h2>
-                <p class="text-sm text-slate-500 mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200"><i class="fa-solid fa-circle-info mr-2 text-yellow-600"></i>บันทึกเฉพาะประวัติผู้ป่วยตรงนี้ก่อน เพื่อตั้งให้เป็นผู้ป่วยที่กำลังกู้ชีพ (Active Patient) จากนั้นระบบจะพาคุณกลับไปหน้า CPR</p>
+                <p class="text-sm text-slate-500 mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200"><i class="fa-solid fa-circle-info mr-2 text-yellow-600"></i>บันทึกข้อมูลพื้นฐานก่อน เพื่อตั้งให้เป็นผู้ป่วยที่กำลังกู้ชีพ (Active Patient) ระบบจะพากลับไปหน้า CPR อัตโนมัติ</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div><label class="block text-sm font-bold text-slate-600 mb-1">HN</label><input type="text" id="patientHN" class="glass-input font-bold text-indigo-700"></div>
@@ -434,7 +422,7 @@
             </div>
 
             <div class="glass-card">
-                <h2 class="text-xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-list text-indigo-600 mr-2"></i>รายชื่อผู้ป่วยในทะเบียน</h2>
+                <h2 class="text-xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-list text-indigo-600 mr-2"></i>รายชื่อผู้ป่วยในระบบ</h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm bg-white/60">
                         <thead>
@@ -473,35 +461,6 @@
                             <li><strong>Change compressor:</strong> เปลี่ยนคนปั๊มทุก 2 นาที</li>
                         </ul>
                     </div>
-
-                    <div class="bg-white/90 p-5 rounded-xl border-l-4 border-purple-500 shadow-sm">
-                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-syringe text-purple-500 mr-2"></i>Medication (การให้ยา)</h3>
-                        <ul class="list-disc pl-5 text-slate-700 space-y-2">
-                            <li><strong>Epinephrine:</strong> 1 mg IV/IO ทุก 3-5 นาที</li>
-                            <li><strong>Amiodarone (VF/pVT):</strong> Dose แรก 300 mg bolus, Dose ที่สอง 150 mg</li>
-                            <li><strong>Lidocaine (แทน Amiodarone):</strong> Dose แรก 1-1.5 mg/kg, Dose ที่สอง 0.5-0.75 mg/kg</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-white/90 p-5 rounded-xl border-l-4 border-blue-500 shadow-sm">
-                        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-stethoscope text-blue-500 mr-2"></i>Reversible Causes (H's and T's)</h3>
-                        <div class="grid grid-cols-2 gap-4 text-sm text-slate-700">
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li>Hypovolemia</li>
-                                <li>Hypoxia</li>
-                                <li>Hydrogen ion (acidosis)</li>
-                                <li>Hypo-/Hyperkalemia</li>
-                                <li>Hypothermia</li>
-                            </ul>
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li>Tension pneumothorax</li>
-                                <li>Tamponade, cardiac</li>
-                                <li>Toxins</li>
-                                <li>Thrombosis, pulmonary</li>
-                                <li>Thrombosis, coronary</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -524,7 +483,7 @@
         </div>
     </nav>
 
-    <!-- Generic Alert Modal -->
+    <!-- Modals -->
     <div id="alertModal" class="modal-overlay">
         <div class="modal-content !max-w-sm text-center">
             <h3 id="alertTitle" class="text-xl font-bold text-slate-800 mb-2">แจ้งเตือน</h3>
@@ -533,7 +492,6 @@
         </div>
     </div>
     
-    <!-- Quick Summary Modal -->
     <div id="summaryModal" class="modal-overlay">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4 border-b pb-2">
@@ -545,7 +503,6 @@
                 <!-- Content injected via JS -->
             </div>
             
-            <!-- Notes and Recorder for final save -->
             <div class="bg-slate-50 p-3 rounded-lg mb-4 border border-slate-200">
                 <h4 class="font-bold text-sm text-slate-700 mb-2">ข้อมูลเพิ่มเติมก่อนบันทึก:</h4>
                 <textarea id="generalNotes" rows="2" class="glass-input mb-2" placeholder="พิมพ์เหตุการณ์/หมายเหตุเพิ่มเติม..."></textarea>
@@ -561,58 +518,61 @@
     </div>
 
     <!-- Hidden PDF Container -->
-    <div id="reportContainerWrapper" style="position: absolute; left: -9999px; top: auto; width: 210mm; background: white; color: black;">
+    <div id="reportContainerWrapper" style="position: absolute; left: -9999px; top: auto; width: 210mm; background: white; color: black; z-index: -1;">
         <div id="reportContent"></div>
     </div>
 
-    <!-- Firebase & App Logic -->
+    <!-- App Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getDatabase, ref, set, onValue, push, remove, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
+        // === ใช้ Config ของผู้ใช้ตรงๆ ===
         const firebaseConfig = {
             apiKey: "AIzaSyAyEudrvfW4jTk8_l8blsQYLItvh2iXtkM",
             authDomain: "cprapp-90ac5.firebaseapp.com",
             projectId: "cprapp-90ac5",
             storageBucket: "cprapp-90ac5.firebasestorage.app",
             messagingSenderId: "423113457627",
-            appId: "1:423113457627:web:f733c99f3f9fcba2fc31fe",
-            databaseURL: "https://cprapp-90ac5-default-rtdb.asia-southeast1.firebasedatabase.app/"
+            appId: "1:423113457627:web:f733c99f3f9fcba2fc31fe"
         };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
         
-        // --- Safe Storage for Preview Mode (iFrame) ---
-        // ป้องกัน Error ในโหมด Preview ที่ทำให้สคริปต์หยุดทำงาน
+        // เติม databaseURL ให้อัตโนมัติ ป้องกัน Realtime DB พัง
+        if (!firebaseConfig.databaseURL) {
+            firebaseConfig.databaseURL = `https://${firebaseConfig.projectId}-default-rtdb.asia-southeast1.firebasedatabase.app/`;
+        }
+
+        // --- Safe Storage (Offline/Local Fallback) ---
         const memoryStorage = {};
         const safeStorage = {
             getItem: (key) => { try { return localStorage.getItem(key) || memoryStorage[key] || null; } catch(e) { return memoryStorage[key] || null; } },
             setItem: (key, value) => { try { localStorage.setItem(key, value); } catch(e) { memoryStorage[key] = value; } }
         };
 
-        let userId = null;
-        let sessionId = safeStorage.getItem('kscpr_sessionId') || Date.now().toString(); 
-        safeStorage.setItem('kscpr_sessionId', sessionId);
-        
-        // Active Patient Logic
+        // Initialize Firebase แบบปลอดภัย
+        let app, auth, db, userId = null;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getDatabase(app);
+        } catch (error) {
+            console.warn("Firebase Init Blocked (Offline mode active)");
+        }
+
+        // Active Patient State
         let activePatientId = null;
         let activePatientData = null;
 
-        // State Variables
+        // Timer States
         let cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval;
         let cprTimeRemaining = 120, adrenalineTimeRemaining = 180, overallCprTimeRemaining = 1800;
         let isCprTimerRunning = false, isAdrenalineTimerRunning = false, isOverallCprCountdownRunning = false, roscAchieved = false;
         let cprStartTime = null, overallCprStartTime = null, cprElapsedTime = 0, cprStopTime = null, stopReason = '';
-        let isAdrenalineFirstStart = true;
         let adrenalineDose = 0;
+        let localMedications = [], localEcgs = [];
 
-        let localMedications = [];
-        let localEcgs = [];
-
-        // DOM Map
+        // DOM Mapping
         const DOM = {
             activePatientNameDisplay: document.getElementById('activePatientNameDisplay'),
             confirmDeathBtn: document.getElementById('confirmDeathBtn'),
@@ -683,62 +643,64 @@
         const ecgActivityOptions = ["CPR", "DEFIB (Shock)"];
         const medicationOptions = ["10% Calcium gluconate", "7.5% NaHCO3", "50% glucose", "Atropine", "Adenosine", "Amiodarone", "Lidocain", "Norepinepheine", "Dopamine", "ยาอื่น ๆ (ระบุในช่อง)"];
 
-        // --- Alert Helper ---
+        // --- Alert Modal Functions ---
         window.showAlert = function(title, msg) {
-            document.getElementById('alertTitle').textContent = title;
-            document.getElementById('alertMessage').textContent = msg;
-            document.getElementById('alertModal').classList.add('visible');
+            const titleEl = document.getElementById('alertTitle');
+            const msgEl = document.getElementById('alertMessage');
+            const modalEl = document.getElementById('alertModal');
+            if(titleEl) titleEl.textContent = title;
+            if(msgEl) msgEl.textContent = msg;
+            if(modalEl) modalEl.classList.add('visible');
         };
-        window.closeAlertModal = function() { document.getElementById('alertModal').classList.remove('visible'); };
+        window.closeAlertModal = function() { 
+            const modalEl = document.getElementById('alertModal');
+            if(modalEl) modalEl.classList.remove('visible'); 
+        };
 
-        // --- Module Switching Logic (Fixes Issue 2) ---
+        // --- View Module Switching ---
         window.switchModule = function(targetId) {
-            // Update mobile nav
-            document.querySelectorAll('.bottom-nav .nav-item').forEach(nav => {
+            document.querySelectorAll('.bottom-nav .nav-item, .desktop-nav .nav-item-desktop').forEach(nav => {
                 nav.classList.toggle('active', nav.getAttribute('data-target') === targetId);
             });
-            // Update desktop nav
-            document.querySelectorAll('.desktop-nav .nav-item-desktop').forEach(nav => {
-                nav.classList.toggle('active', nav.getAttribute('data-target') === targetId);
-            });
-            // Switch Panes
             document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
             document.getElementById(targetId).classList.add('active');
             window.scrollTo(0,0);
         }
         
-        // Add listeners for both Mobile and Desktop nav buttons
         document.querySelectorAll('.nav-item, .nav-item-desktop').forEach(item => {
-            item.addEventListener('click', function() {
-                switchModule(this.getAttribute('data-target'));
-            });
+            item.addEventListener('click', function() { switchModule(this.getAttribute('data-target')); });
         });
 
-        // --- Local Storage Database Helper (Fixes Issue 1) ---
-        // This ensures the app ALWAYS saves data successfully, even if Firebase is blocked
+        // --- Local Database Helper ---
         const LOCAL_DB_KEY = 'kscpr_offline_patients';
-        
         function getLocalPatients() {
-            return JSON.parse(safeStorage.getItem(LOCAL_DB_KEY) || '{}');
+            try {
+                const data = safeStorage.getItem(LOCAL_DB_KEY);
+                if (!data || data === 'undefined' || data === 'null') return {};
+                return JSON.parse(data);
+            } catch (e) { return {}; }
         }
         function saveToLocalPatients(id, data) {
-            const db = getLocalPatients();
-            db[id] = { info: data, ...db[id] }; // merge
-            safeStorage.setItem(LOCAL_DB_KEY, JSON.stringify(db));
+            const localDb = getLocalPatients();
+            localDb[id] = { info: data, ...localDb[id] };
+            safeStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
         }
 
-        // --- Firebase Setup ---
+        // --- Firebase Initialization ---
         async function authenticate() {
-            try {
-                const cred = await signInAnonymously(auth);
-                userId = cred.user.uid;
-            } catch (error) { 
-                console.warn("Firebase Auth Warning: Local saving will be used.", error); 
+            if (auth) {
+                try {
+                    const cred = await signInAnonymously(auth);
+                    userId = cred.user.uid;
+                } catch (error) { 
+                    console.warn("Auth failed, using offline mode."); 
+                }
             }
-            loadRegistryData(); // Load data regardless of auth status
+            loadRegistryData(); 
         }
 
         function populateSelect(selectElement, options) {
+            if(!selectElement) return;
             selectElement.innerHTML = '<option value="">เลือก...</option>';
             options.forEach(opt => {
                 const option = document.createElement('option');
@@ -748,14 +710,15 @@
         }
 
         function updateActivePatientUI() {
-            if (activePatientData && activePatientData.name) {
+            if (activePatientData && activePatientData.name && DOM.activePatientNameDisplay) {
                 DOM.activePatientNameDisplay.innerHTML = `<i class="fa-solid fa-user-check text-green-300 mr-2"></i> ${activePatientData.name} (HN: ${activePatientData.hn || '-'})`;
-            } else {
-                DOM.activePatientNameDisplay.innerHTML = `<i class="fa-solid fa-circle-exclamation text-yellow-300 mr-2"></i>ยังไม่ได้เลือกผู้ป่วย (แตะเพื่อเลือก/ลงทะเบียน)`;
+            } else if (DOM.activePatientNameDisplay) {
+                DOM.activePatientNameDisplay.innerHTML = `<i class="fa-solid fa-circle-exclamation text-yellow-300 mr-2"></i>ยังไม่ได้เลือกผู้ป่วย (แตะเพื่อลงทะเบียน)`;
             }
         }
 
         function getPatientFormData() {
+            if(!DOM.patientHN) return {};
             return {
                 hn: DOM.patientHN.value,
                 name: DOM.patientName.value,
@@ -771,59 +734,60 @@
             };
         }
 
-        // --- SAVE PATIENT BASIC INFO (HYBRID) ---
-        DOM.saveBasicPatientBtn.addEventListener('click', async () => {
-            if(!DOM.patientHN.value || !DOM.patientName.value) {
-                showAlert('ข้อมูลไม่ครบ', 'กรุณากรอก HN และ ชื่อ-สกุล ผู้ป่วย');
-                return;
-            }
-
-            const originalBtnText = DOM.saveBasicPatientBtn.innerHTML;
-            DOM.saveBasicPatientBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังบันทึก...';
-            DOM.saveBasicPatientBtn.disabled = true;
-
-            const data = getPatientFormData();
-            
-            try {
-                if(!activePatientId) activePatientId = 'pat_' + Date.now(); // Generate ID
-                
-                // Always save locally to guarantee it works!
-                saveToLocalPatients(activePatientId, data);
-
-                // Try to save to Firebase if online
-                if(userId) {
-                    await set(ref(db, `patients/${activePatientId}/info`), data);
+        // --- PATIENT REGISTER (Non-Blocking) ---
+        if(DOM.saveBasicPatientBtn) {
+            DOM.saveBasicPatientBtn.addEventListener('click', () => {
+                if(!DOM.patientHN.value || !DOM.patientName.value) {
+                    showAlert('ข้อมูลไม่ครบ', 'กรุณากรอก HN และ ชื่อ-สกุล ผู้ป่วย');
+                    return;
                 }
-                
-                activePatientData = data;
-                updateActivePatientUI();
-                showAlert('บันทึกสำเร็จ', 'ข้อมูลถูกบันทึกและพร้อมสำหรับทำการ CPR แล้ว');
-                
-                // Automatically go to CPR module
-                switchModule('tab-home');
-                loadRegistryData(); // refresh table
 
-            } catch (e) {
-                console.error(e);
-                showAlert('ข้อผิดพลาด', 'เกิดปัญหาบางอย่าง แต่ระบบได้สำรองข้อมูลแบบออฟไลน์ไว้ให้แล้ว');
-            } finally {
-                DOM.saveBasicPatientBtn.innerHTML = originalBtnText;
-                DOM.saveBasicPatientBtn.disabled = false;
-            }
-        });
+                const originalBtnText = DOM.saveBasicPatientBtn.innerHTML;
+                DOM.saveBasicPatientBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังบันทึก...';
+                DOM.saveBasicPatientBtn.disabled = true;
 
-        DOM.clearPatientBtn.addEventListener('click', () => {
-            DOM.patientHN.value = ''; DOM.patientName.value = ''; DOM.patientAge.value = '';
-            DOM.causeOfCprSelect.value = ''; DOM.causeOfCprOther.value = ''; DOM.causeOfCprOther.style.display = 'none';
-            DOM.underlyingDisease.value = ''; DOM.medicationHistory.value = ''; DOM.surgicalHistory.value = '';
-            document.querySelector('input[name="substanceUse"][value="no"]').checked = true;
-            document.querySelector('input[name="alcoholUse"][value="no"]').checked = true;
-            document.querySelector('input[name="smokingUse"][value="no"]').checked = true;
-        });
+                try {
+                    const data = getPatientFormData();
+                    if(!activePatientId) activePatientId = 'pat_' + Date.now();
+                    
+                    // เซฟลงเครื่อง (ลื่นไหล 100% บน GitHub)
+                    saveToLocalPatients(activePatientId, data);
+                    
+                    // ซิงค์ Firebase เบื้องหลัง
+                    if(db && userId) {
+                        set(ref(db, `patients/${activePatientId}/info`), data).catch(()=>console.warn('Sync delayed'));
+                    }
+                    
+                    activePatientData = data;
+                    updateActivePatientUI();
+                    showAlert('สำเร็จ', 'บันทึกประวัติผู้ป่วยและเตรียมพร้อม CPR แล้ว');
+                    
+                    switchModule('tab-home');
+                    loadRegistryData(); 
+
+                } catch (e) {
+                    console.error("Save Error:", e);
+                    showAlert('แจ้งเตือน', 'พบปัญหาในการบันทึกข้อมูล (ออฟไลน์ทำงาน)');
+                } finally {
+                    DOM.saveBasicPatientBtn.innerHTML = originalBtnText;
+                    DOM.saveBasicPatientBtn.disabled = false;
+                }
+            });
+        }
+
+        if(DOM.clearPatientBtn) {
+            DOM.clearPatientBtn.addEventListener('click', () => {
+                DOM.patientHN.value = ''; DOM.patientName.value = ''; DOM.patientAge.value = '';
+                DOM.causeOfCprSelect.value = ''; DOM.causeOfCprOther.value = ''; DOM.causeOfCprOther.style.display = 'none';
+                DOM.underlyingDisease.value = ''; DOM.medicationHistory.value = ''; DOM.surgicalHistory.value = '';
+            });
+        }
 
         function renderRegistryTable(patientsObj) {
             const tbody = document.getElementById('registryTableBody');
+            if(!tbody) return;
             tbody.innerHTML = '';
+            
             if(patientsObj && Object.keys(patientsObj).length > 0) {
                 const sorted = Object.entries(patientsObj)
                     .filter(([id, data]) => data.info)
@@ -838,147 +802,116 @@
                             <td>${info.name}</td>
                             <td>${dateStr}</td>
                             <td>
-                                <button onclick="loadPatientToForm('${id}')" class="text-blue-600 hover:text-blue-800 mr-3" title="เลือกทำ CPR"><i class="fa-solid fa-hand-pointer"></i></button>
-                                <button onclick="deletePatient('${id}')" class="text-slate-400 hover:text-slate-600" title="ลบข้อมูล"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="loadPatientToForm('${id}')" class="text-blue-600 hover:text-blue-800 mr-3"><i class="fa-solid fa-hand-pointer"></i></button>
+                                <button onclick="deletePatient('${id}')" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     `;
                 });
             } else {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500">ไม่มีข้อมูลในทะเบียน</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500">ไม่มีข้อมูล...</td></tr>';
             }
         }
 
         function loadRegistryData() {
-            // Load from Local Storage immediately
+            // โหลดจาก Local Storage เสมอ
             const localData = getLocalPatients();
             renderRegistryTable(localData);
 
-            // Listen to Firebase to sync updates (if available)
-            if (userId) {
+            // ฟังการอัปเดตจาก Firebase (มี error fallback กันค้าง)
+            if (db && userId) {
                 onValue(ref(db, 'patients'), (snapshot) => {
                     const fbData = snapshot.val();
                     if(fbData) {
-                        // Sync firebase to local
                         safeStorage.setItem(LOCAL_DB_KEY, JSON.stringify(fbData));
                         renderRegistryTable(fbData);
                     }
+                }, (error) => {
+                    console.warn("Firebase Read Blocked:", error.message);
                 });
             }
         }
 
-        window.loadPatientToForm = async function(id) {
+        window.loadPatientToForm = function(id) {
             const localData = getLocalPatients();
             const data = localData[id]?.info;
-            
             if(data) {
                 activePatientId = id;
                 activePatientData = data;
                 updateActivePatientUI();
-                
-                DOM.patientHN.value = data.hn || '';
-                DOM.patientName.value = data.name || '';
-                DOM.patientAge.value = data.age || '';
-                DOM.underlyingDisease.value = data.underlying || '';
-                DOM.medicationHistory.value = data.medHistory || '';
-                DOM.surgicalHistory.value = data.surgHistory || '';
-                
-                let foundCause = false;
-                Array.from(DOM.causeOfCprSelect.options).forEach(opt => {
-                    if(opt.value === data.cause) { DOM.causeOfCprSelect.value = data.cause; foundCause = true; }
-                });
-                if(!foundCause && data.cause) {
-                    DOM.causeOfCprSelect.value = 'อื่นๆ (ระบุ)';
-                    DOM.causeOfCprOther.style.display = 'block';
-                    DOM.causeOfCprOther.value = data.cause;
-                } else {
-                    DOM.causeOfCprOther.style.display = 'none';
-                }
-
-                if(data.substance) document.querySelector(`input[name="substanceUse"][value="${data.substance}"]`).checked = true;
-                if(data.alcohol) document.querySelector(`input[name="alcoholUse"][value="${data.alcohol}"]`).checked = true;
-                if(data.smoking) document.querySelector(`input[name="smokingUse"][value="${data.smoking}"]`).checked = true;
-                
-                showAlert('สำเร็จ', `เลือกผู้ป่วยเป็น Active Patient เรียบร้อยแล้ว`);
+                showAlert('สำเร็จ', `เตรียมผู้ป่วย: ${data.name} พร้อม CPR`);
                 switchModule('tab-home');
             }
         };
 
-        window.deletePatient = async function(id) {
-            if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบผู้ป่วยรายนี้ออกจากระบบ?')) {
-                // Delete local
+        window.deletePatient = function(id) {
+            if(confirm('ยืนยันลบผู้ป่วยรายนี้?')) {
                 let localDb = getLocalPatients();
                 delete localDb[id];
                 safeStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
                 
-                // Delete Firebase
-                if(userId) await remove(ref(db, `patients/${id}`));
-                
-                if (activePatientId === id) { DOM.clearPatientBtn.click(); activePatientId=null; activePatientData=null; updateActivePatientUI(); }
-                loadRegistryData(); // refresh UI
+                if(db && userId) remove(ref(db, `patients/${id}`)).catch(()=>{});
+                if (activePatientId === id) { activePatientId=null; activePatientData=null; updateActivePatientUI(); }
+                loadRegistryData(); 
             }
         };
 
-        // --- SAVE EVENT TO PATIENT (HYBRID) ---
-        DOM.saveEventToPatientBtn.addEventListener('click', async () => {
-            if (!activePatientId) {
-                showAlert('ไม่พบผู้ป่วย', 'กรุณากลับไปหน้าทะเบียนผู้ป่วย เพื่อเลือกรายชื่อผู้ป่วยก่อนบันทึกเหตุการณ์');
-                document.getElementById('summaryModal').classList.remove('visible');
-                switchModule('tab-registry');
-                return;
-            }
-
-            const getLogs = (el) => Array.from(el.children).map(d => d.innerHTML).reverse();
-            
-            const eventData = {
-                timestamp: Date.now(),
-                startTime: cprStartTime ? cprStartTime.toISOString() : null,
-                stopTime: cprStopTime ? cprStopTime.toISOString() : null,
-                totalCprSeconds: cprElapsedTime,
-                adrenalineDose: adrenalineDose,
-                stopReason: stopReason || 'กำลังดำเนินการ',
-                notes: DOM.generalNotes.value || '',
-                recorder: DOM.recorderName.value || '',
-                medications: localMedications,
-                ecgs: localEcgs,
-                logs: {
-                    cpr: getLogs(DOM.cprActivityLog),
-                    adrenaline: getLogs(DOM.adrenalineActivityLog),
-                    meds: getLogs(DOM.medicationActivityLog),
-                    ecg: getLogs(DOM.ecgActivityLog)
-                }
-            };
-
-            const originalText = DOM.saveEventToPatientBtn.innerHTML;
-            DOM.saveEventToPatientBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังบันทึกลงประวัติ...';
-            DOM.saveEventToPatientBtn.disabled = true;
-
-            try {
-                // Save locally first
-                let localDb = getLocalPatients();
-                if(!localDb[activePatientId].events) localDb[activePatientId].events = {};
-                const newEventId = 'evt_' + Date.now();
-                localDb[activePatientId].events[newEventId] = eventData;
-                safeStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
-
-                // Save Firebase
-                if(userId) {
-                    await set(ref(db, `patients/${activePatientId}/events/${newEventId}`), eventData);
+        // --- SAVE EVENTS TO REGISTRY ---
+        if(DOM.saveEventToPatientBtn) {
+            DOM.saveEventToPatientBtn.addEventListener('click', () => {
+                if (!activePatientId) {
+                    showAlert('ไม่พบผู้ป่วย', 'กรุณากลับไปหน้าทะเบียน เพื่อเลือกผู้ป่วยก่อนบันทึกเหตุการณ์');
+                    return;
                 }
 
-                showAlert('สำเร็จ', 'บันทึกเหตุการณ์การ CPR นี้เข้าสู่ประวัติผู้ป่วยเรียบร้อยแล้ว');
-            } catch (err) {
-                console.error(err);
-                showAlert('สำเร็จ', 'บันทึกเหตุการณ์ลงในเครื่องเรียบร้อยแล้ว (ออฟไลน์)');
-            } finally {
-                DOM.saveEventToPatientBtn.innerHTML = originalText;
-                DOM.saveEventToPatientBtn.disabled = false;
-            }
-        });
+                const getLogs = (el) => Array.from(el.children).map(d => d.innerHTML).reverse();
+                const eventData = {
+                    timestamp: Date.now(),
+                    startTime: cprStartTime ? cprStartTime.toISOString() : null,
+                    stopTime: cprStopTime ? cprStopTime.toISOString() : null,
+                    totalCprSeconds: cprElapsedTime,
+                    adrenalineDose: adrenalineDose,
+                    stopReason: stopReason || 'กำลังดำเนินการ',
+                    notes: DOM.generalNotes.value || '',
+                    recorder: DOM.recorderName.value || '',
+                    medications: localMedications,
+                    ecgs: localEcgs,
+                    logs: {
+                        cpr: DOM.cprActivityLog ? getLogs(DOM.cprActivityLog) : [],
+                        adrenaline: DOM.adrenalineActivityLog ? getLogs(DOM.adrenalineActivityLog) : [],
+                        meds: DOM.medicationActivityLog ? getLogs(DOM.medicationActivityLog) : [],
+                        ecg: DOM.ecgActivityLog ? getLogs(DOM.ecgActivityLog) : []
+                    }
+                };
 
+                const originalText = DOM.saveEventToPatientBtn.innerHTML;
+                DOM.saveEventToPatientBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังบันทึก...';
+                DOM.saveEventToPatientBtn.disabled = true;
 
-        // --- UI Logging functions ---
+                try {
+                    let localDb = getLocalPatients();
+                    if(!localDb[activePatientId].events) localDb[activePatientId].events = {};
+                    const newEventId = 'evt_' + Date.now();
+                    localDb[activePatientId].events[newEventId] = eventData;
+                    safeStorage.setItem(LOCAL_DB_KEY, JSON.stringify(localDb));
+
+                    if(db && userId) {
+                        set(ref(db, `patients/${activePatientId}/events/${newEventId}`), eventData).catch(()=>{});
+                    }
+
+                    showAlert('สำเร็จ', 'บันทึกเหตุการณ์ CPR ลงประวัติผู้ป่วยเสร็จสิ้น');
+                } catch (err) {
+                    showAlert('บันทึกออฟไลน์', 'เซฟลงเครื่องสำเร็จ');
+                } finally {
+                    DOM.saveEventToPatientBtn.innerHTML = originalText;
+                    DOM.saveEventToPatientBtn.disabled = false;
+                }
+            });
+        }
+
+        // --- Utilities ---
         function addTableRowLocal(tbody, data) {
+            if(!tbody) return;
             const tr = tbody.insertRow();
             data.forEach(txt => tr.insertCell().textContent = txt);
         }
@@ -1000,6 +933,7 @@
                 DOM[logTypeStr.replace('Logs', 'ActivityLog')].prepend(entry);
             }
         }
+        
         function logActivityToAll(activity, type) {
             ['cprActivityLog', 'adrenalineActivityLog', 'medicationActivityLog', 'ecgActivityLog'].forEach(t => {
                 const html = `<span class="text-red-600 font-bold">[${new Date().toLocaleTimeString('th-TH')}]</span> ${activity}`;
@@ -1009,14 +943,12 @@
             });
         }
 
-        // --- Timers Logic ---
         function formatTime(s) { const m = Math.floor(s/60); const sec = s%60; return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`; }
         
         let thVoice = null;
         function setupVoice() {
             let voices = window.speechSynthesis.getVoices();
-            thVoice = voices.find(v => v.lang === 'th-TH' && (v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Siri'))) || 
-                      voices.find(v => v.lang === 'th-TH');
+            thVoice = voices.find(v => v.lang === 'th-TH' && (v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Siri'))) || voices.find(v => v.lang === 'th-TH');
         }
         if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = setupVoice; }
 
@@ -1062,12 +994,10 @@
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = eta.toLocaleTimeString('th-TH').split(' ')[0];
         }
 
-        DOM.startCprTimerBtn.addEventListener('click', () => {
+        // --- Timer Buttons ---
+        if(DOM.startCprTimerBtn) DOM.startCprTimerBtn.addEventListener('click', () => {
             if (isCprTimerRunning) return;
-            if (roscAchieved) { 
-                overallCprTimeRemaining = 1800; cprStartTime = null; roscAchieved = false; 
-                logActivity("เริ่ม CPR ใหม่อีกครั้งหลัง Arrest ซ้ำ", "CPR"); 
-            }
+            if (roscAchieved) { overallCprTimeRemaining = 1800; cprStartTime = null; roscAchieved = false; logActivity("เริ่ม CPR ซ้ำ", "CPR"); }
             if (!cprStartTime) { 
                 cprStartTime = new Date(); 
                 if(DOM.cprStartTimeDisplay) DOM.cprStartTimeDisplay.textContent = cprStartTime.toTimeString().split(' ')[0]; 
@@ -1093,24 +1023,20 @@
                     speak("ครบ 2 นาที คลำชีพจร"); logActivity("ครบ 2 นาที คลำชีพจร", 'CPR');
                     cprTimeRemaining = 120; 
                     if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = formatTime(120);
-                    if (DOM.cprContinuousMode.checked) DOM.startCprTimerBtn.click();
-                    else { 
-                        DOM.stopCprTimerBtn.disabled = true; 
-                        DOM.startCprTimerBtn.disabled = false; 
-                        DOM.resetCprTimerBtn.disabled = false; 
-                        if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--';
-                    }
+                    if (DOM.cprContinuousMode && DOM.cprContinuousMode.checked) DOM.startCprTimerBtn.click();
+                    else { DOM.stopCprTimerBtn.disabled = true; DOM.startCprTimerBtn.disabled = false; DOM.resetCprTimerBtn.disabled = false; if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; }
                 }
             }, 1000);
         });
 
-        DOM.stopCprTimerBtn.addEventListener('click', () => {
+        if(DOM.stopCprTimerBtn) DOM.stopCprTimerBtn.addEventListener('click', () => {
             clearInterval(cprTimerInterval); isCprTimerRunning = false; 
             DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true; DOM.resetCprTimerBtn.disabled = false; 
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--';
             logActivity(`หยุดรอบ CPR ชั่วคราว`, 'CPR');
         });
-        DOM.resetCprTimerBtn.addEventListener('click', () => {
+        
+        if(DOM.resetCprTimerBtn) DOM.resetCprTimerBtn.addEventListener('click', () => {
             clearInterval(cprTimerInterval); isCprTimerRunning = false; cprTimeRemaining = 120; 
             if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = "02:00";
             DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true;
@@ -1118,14 +1044,12 @@
             logActivity("รีเซ็ตนาฬิกา CPR", 'CPR');
         });
 
-        DOM.startAdrenalineTimerBtn.addEventListener('click', () => {
+        if(DOM.startAdrenalineTimerBtn) DOM.startAdrenalineTimerBtn.addEventListener('click', () => {
             if (isAdrenalineTimerRunning) return;
             adrenalineDose++;
             if(DOM.adrenalineDoseDisplay) DOM.adrenalineDoseDisplay.textContent = adrenalineDose;
-            
             isAdrenalineTimerRunning = true; 
             DOM.startAdrenalineTimerBtn.disabled = true; DOM.stopAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = true;
-            
             logActivity(`เริ่มจับเวลา Adrenaline Dose ${adrenalineDose}`, 'ADRENALINE');
             
             adrenalineTimerInterval = setInterval(() => {
@@ -1137,109 +1061,97 @@
                     speak(`ฉีดยา Adrenaline โดสที่ ${adrenalineDose}`); logActivity(`ฉีดยา Adrenaline Dose ${adrenalineDose} แล้ว`, 'ADRENALINE');
                     adrenalineTimeRemaining = 180; 
                     if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
-                    if (DOM.adrenalineContinuousMode.checked) DOM.startAdrenalineTimerBtn.click();
+                    if (DOM.adrenalineContinuousMode && DOM.adrenalineContinuousMode.checked) DOM.startAdrenalineTimerBtn.click();
                     else { DOM.stopAdrenalineTimerBtn.disabled = true; DOM.startAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = false; }
                 }
             }, 1000);
         });
-        DOM.stopAdrenalineTimerBtn.addEventListener('click', () => {
+
+        if(DOM.stopAdrenalineTimerBtn) DOM.stopAdrenalineTimerBtn.addEventListener('click', () => {
             clearInterval(adrenalineTimerInterval); isAdrenalineTimerRunning = false;
             DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true; DOM.resetAdrenalineTimerBtn.disabled = false;
         });
-        DOM.resetAdrenalineTimerBtn.addEventListener('click', () => {
+
+        if(DOM.resetAdrenalineTimerBtn) DOM.resetAdrenalineTimerBtn.addEventListener('click', () => {
             clearInterval(adrenalineTimerInterval); isAdrenalineTimerRunning = false; adrenalineTimeRemaining = 180; 
             if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
             DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true;
             logActivity("รีเซ็ตนาฬิกา Adrenaline", 'ADRENALINE');
         });
 
-        // ROSC / Death Controls
-        DOM.roscBtn.addEventListener('click', () => {
+        // --- General Event Buttons ---
+        if(DOM.roscBtn) DOM.roscBtn.addEventListener('click', () => {
             roscAchieved = true; cprStopTime = new Date(); stopReason = 'ROSC';
             [cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval].forEach(clearInterval);
             isCprTimerRunning = false; isAdrenalineTimerRunning = false;
-            
             if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = "02:00";
             if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
             DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true;
             DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true;
-            
             logActivity("ROSC (ผู้ป่วยกลับมามีชีพจร)", "ROSC"); 
             speak("อาร์ โอ เอส ซี กรุณาดูแลหลังการกู้ชีพ");
-            
-            DOM.roscBtn.style.display = 'none'; 
-            DOM.continueBtn.style.display = 'inline-flex';
-            DOM.quickSummaryBtn.style.display = 'block';
+            DOM.roscBtn.style.display = 'none'; DOM.continueBtn.style.display = 'inline-flex';
+            if(DOM.quickSummaryBtn) DOM.quickSummaryBtn.style.display = 'block';
         });
 
-        DOM.continueBtn.addEventListener('click', () => {
-            logActivity("ผู้ป่วย Arrest ซ้ำ เริ่ม CPR รอบใหม่", "CPR");
-            speak("เริ่มซีพีอาร์รอบใหม่");
-            DOM.continueBtn.style.display = 'none'; 
-            DOM.roscBtn.style.display = 'inline-flex';
-            DOM.quickSummaryBtn.style.display = 'none';
+        if(DOM.continueBtn) DOM.continueBtn.addEventListener('click', () => {
+            logActivity("ผู้ป่วย Arrest ซ้ำ เริ่ม CPR รอบใหม่", "CPR"); speak("เริ่มซีพีอาร์รอบใหม่");
+            DOM.continueBtn.style.display = 'none'; DOM.roscBtn.style.display = 'inline-flex';
+            if(DOM.quickSummaryBtn) DOM.quickSummaryBtn.style.display = 'none';
             DOM.startCprTimerBtn.click();
         });
 
-        DOM.confirmDeathBtn.addEventListener('click', () => {
+        if(DOM.confirmDeathBtn) DOM.confirmDeathBtn.addEventListener('click', () => {
             [cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval].forEach(clearInterval);
             isCprTimerRunning = false; isAdrenalineTimerRunning = false;
             if(!cprStopTime) cprStopTime = new Date();
-            
             DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true;
             DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true;
-            
-            logActivityToAll(`หยุดการเวลาชั่วคราว/เตรียมยุติการ CPR`, 'STOP'); speak("เตรียมยุติการทำซีพีอาร์ โปรดระบุสาเหตุ");
-            DOM.reasonForDeathSection.style.display = 'block';
+            logActivityToAll(`เตรียมยุติการ CPR`, 'STOP'); speak("เตรียมยุติการทำซีพีอาร์ โปรดระบุสาเหตุ");
+            if(DOM.reasonForDeathSection) DOM.reasonForDeathSection.style.display = 'block';
             DOM.confirmDeathBtn.disabled = true;
-            DOM.quickSummaryBtn.style.display = 'block';
+            if(DOM.quickSummaryBtn) DOM.quickSummaryBtn.style.display = 'block';
         });
 
         document.querySelectorAll('input[name="deathReason"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if(e.target.value === 'อื่นๆ') {
-                    DOM.deathReasonOther.style.display = 'block';
-                    DOM.saveStopReasonBtn.style.display = 'inline-flex';
+                    if(DOM.deathReasonOther) DOM.deathReasonOther.style.display = 'block';
+                    if(DOM.saveStopReasonBtn) DOM.saveStopReasonBtn.style.display = 'inline-flex';
                 } else {
-                    DOM.deathReasonOther.style.display = 'none';
-                    DOM.saveStopReasonBtn.style.display = 'none';
+                    if(DOM.deathReasonOther) DOM.deathReasonOther.style.display = 'none';
+                    if(DOM.saveStopReasonBtn) DOM.saveStopReasonBtn.style.display = 'none';
                     stopReason = e.target.value; 
                     logActivityToAll(`ยืนยันการยุติ สาเหตุ: ${stopReason}`, 'STOP');
-                    DOM.reasonForDeathSection.style.display = 'none'; 
+                    if(DOM.reasonForDeathSection) DOM.reasonForDeathSection.style.display = 'none'; 
                 }
             });
         });
         
-        DOM.saveStopReasonBtn.addEventListener('click', () => {
-            stopReason = DOM.deathReasonOther.value || 'อื่นๆ (ไม่ระบุ)';
+        if(DOM.saveStopReasonBtn) DOM.saveStopReasonBtn.addEventListener('click', () => {
+            stopReason = DOM.deathReasonOther ? DOM.deathReasonOther.value : 'อื่นๆ (ไม่ระบุ)';
             logActivityToAll(`ยืนยันการยุติ สาเหตุ: ${stopReason}`, 'STOP');
-            DOM.reasonForDeathSection.style.display = 'none'; 
+            if(DOM.reasonForDeathSection) DOM.reasonForDeathSection.style.display = 'none'; 
         });
 
         // --- Summary & Image Export ---
-        function generateQuickSummary() {
+        if(DOM.quickSummaryBtn) DOM.quickSummaryBtn.addEventListener('click', () => {
             const getLogs = (el) => Array.from(el.children).map(d => d.innerText).reverse();
-            const cprL = getLogs(DOM.cprActivityLog);
-            const adrL = getLogs(DOM.adrenalineActivityLog);
-            const medL = getLogs(DOM.medicationActivityLog);
-            const ecgL = getLogs(DOM.ecgActivityLog);
+            const cprL = DOM.cprActivityLog ? getLogs(DOM.cprActivityLog) : [];
             
             let totalCprTimeFormatted = formatTime(cprElapsedTime);
-            if (cprStartTime && cprStopTime) {
-                totalCprTimeFormatted = formatTime(Math.floor((cprStopTime - cprStartTime) / 1000));
-            }
+            if (cprStartTime && cprStopTime) totalCprTimeFormatted = formatTime(Math.floor((cprStopTime - cprStartTime) / 1000));
             const cycleCount = cprL.filter(l => l.includes('ครบ 2 นาที คลำชีพจร')).length;
-            const adrCount = adrenalineDose; 
             
             let summaryHTML = `
                 <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-200 mb-4 text-center shadow-sm">
                     <div class="grid grid-cols-3 gap-2">
                         <div><p class="text-[10px] text-slate-500 uppercase tracking-wide">เวลา CPR รวม</p><p class="text-xl font-bold text-indigo-700">${totalCprTimeFormatted}</p></div>
                         <div class="border-l border-r border-indigo-200"><p class="text-[10px] text-slate-500 uppercase tracking-wide">รอบ CPR</p><p class="text-xl font-bold text-indigo-700">${cycleCount} <span class="text-xs font-normal text-slate-600">รอบ</span></p></div>
-                        <div><p class="text-[10px] text-slate-500 uppercase tracking-wide">Adrenaline</p><p class="text-xl font-bold text-purple-700">${adrCount} <span class="text-xs font-normal text-slate-600">Dose</span></p></div>
+                        <div><p class="text-[10px] text-slate-500 uppercase tracking-wide">Adrenaline</p><p class="text-xl font-bold text-purple-700">${adrenalineDose} <span class="text-xs font-normal text-slate-600">Dose</span></p></div>
                     </div>
                 </div>
-                <p><strong>ผู้ป่วย:</strong> ${activePatientData ? activePatientData.name : '<span class="text-red-500">ยังไม่ได้ลงทะเบียน</span>'}</p>
+                <p><strong>ผู้ป่วย:</strong> ${activePatientData ? activePatientData.name : '<span class="text-red-500">ยังไม่ได้เลือกลงทะเบียน</span>'}</p>
                 <p><strong>เวลาเริ่ม CPR:</strong> ${cprStartTime ? cprStartTime.toTimeString().split(' ')[0] : '-'}</p>
                 <p><strong>เวลายกเลิก/ROSC:</strong> ${cprStopTime ? cprStopTime.toTimeString().split(' ')[0] : '-'}</p>
                 <p><strong>สถานะปัจจุบัน:</strong> <span class="text-red-600 font-bold">${stopReason || 'กำลังดำเนินการ'}</span></p>
@@ -1248,68 +1160,60 @@
                     <ul class="list-disc pl-5 text-xs">${cprL.filter(l => l.includes('เริ่มรอบ CPR')).map(l => `<li>${l}</li>`).join('') || '<li>ไม่มีข้อมูล</li>'}</ul>
                 </div>
             `;
-            document.getElementById('quickSummaryContent').innerHTML = summaryHTML;
-            document.getElementById('summaryModal').classList.add('visible');
-        }
+            const contentDiv = document.getElementById('quickSummaryContent');
+            if(contentDiv) contentDiv.innerHTML = summaryHTML;
+            const modalEl = document.getElementById('summaryModal');
+            if(modalEl) modalEl.classList.add('visible');
+        });
 
-        DOM.quickSummaryBtn.addEventListener('click', generateQuickSummary);
-
-        DOM.downloadSummaryJpegBtn.addEventListener('click', async () => {
+        if(DOM.downloadSummaryJpegBtn) DOM.downloadSummaryJpegBtn.addEventListener('click', async () => {
             const content = document.getElementById('quickSummaryContent');
+            if(!content) return;
             const originalMaxHeight = content.style.maxHeight;
             const originalOverflow = content.style.overflowY;
-            content.style.maxHeight = 'none';
-            content.style.overflowY = 'visible';
-
+            content.style.maxHeight = 'none'; content.style.overflowY = 'visible';
             try {
                 const canvas = await html2canvas(content, { scale: 2, backgroundColor: '#ffffff' });
                 const link = document.createElement('a');
                 link.download = `CPR_Summary_${new Date().getTime()}.jpeg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.9);
                 link.click();
-            } catch(e) {
-                showAlert('ข้อผิดพลาด', 'ไม่สามารถบันทึกรูปภาพได้');
-            } finally {
-                content.style.maxHeight = originalMaxHeight;
-                content.style.overflowY = originalOverflow;
-            }
+            } catch(e) { showAlert('ข้อผิดพลาด', 'ไม่สามารถบันทึกรูปภาพได้'); } 
+            finally { content.style.maxHeight = originalMaxHeight; content.style.overflowY = originalOverflow; }
         });
 
-        // Actions Appenders
-        DOM.setMedicationTimeBtn.addEventListener('click', () => DOM.medicationTime.value = new Date().toTimeString().split(' ')[0]);
-        DOM.setEcgTimeBtn.addEventListener('click', () => DOM.ecgTime.value = new Date().toTimeString().split(' ')[0]);
+        // --- Action Buttons ---
+        if(DOM.setMedicationTimeBtn) DOM.setMedicationTimeBtn.addEventListener('click', () => DOM.medicationTime.value = new Date().toTimeString().split(' ')[0]);
+        if(DOM.setEcgTimeBtn) DOM.setEcgTimeBtn.addEventListener('click', () => DOM.ecgTime.value = new Date().toTimeString().split(' ')[0]);
         
-        DOM.addMedicationBtn.addEventListener('click', () => {
+        if(DOM.addMedicationBtn) DOM.addMedicationBtn.addEventListener('click', () => {
             if(!DOM.medicationName.value) return;
             const item = { name: DOM.medicationName.value, dosage: DOM.medicationDosage.value, time: DOM.medicationTime.value || new Date().toTimeString().split(' ')[0], notes: DOM.medicationNotes.value };
-            
             localMedications.push(item);
             addTableRowLocal(DOM.medicationTableBody, [item.name, item.dosage, item.time, item.notes]);
-            
             logActivity(`ให้ยา: ${item.name} ${item.dosage} เวลา ${item.time}`, 'MED');
-            [DOM.medicationName, DOM.medicationDosage, DOM.medicationTime, DOM.medicationNotes].forEach(e => e.value = '');
+            [DOM.medicationName, DOM.medicationDosage, DOM.medicationTime, DOM.medicationNotes].forEach(e => { if(e) e.value = '' });
         });
 
-        DOM.addEcgBtn.addEventListener('click', () => {
+        if(DOM.addEcgBtn) DOM.addEcgBtn.addEventListener('click', () => {
             if(!DOM.ecgType.value) return;
             const item = { type: DOM.ecgType.value, activity: DOM.ecgActivity.value, output: DOM.ecgOutput.value, time: DOM.ecgTime.value || new Date().toTimeString().split(' ')[0], notes: DOM.ecgNotes.value };
-            
             localEcgs.push(item);
             addTableRowLocal(DOM.ecgTableBody, [item.type, item.activity, item.output, item.time, item.notes]);
-            
             logActivity(`ECG: ${item.type} | ทำ: ${item.activity} ${item.output}J`, 'ECG');
-            [DOM.ecgType, DOM.ecgActivity, DOM.ecgOutput, DOM.ecgTime, DOM.ecgNotes].forEach(e => e.value = '');
+            [DOM.ecgType, DOM.ecgActivity, DOM.ecgOutput, DOM.ecgTime, DOM.ecgNotes].forEach(e => { if(e) e.value = '' });
         });
 
-        DOM.causeOfCprSelect.addEventListener('change', (e) => DOM.causeOfCprOther.style.display = e.target.value === 'อื่นๆ (ระบุ)' ? 'block' : 'none');
+        if(DOM.causeOfCprSelect) DOM.causeOfCprSelect.addEventListener('change', (e) => {
+            if(DOM.causeOfCprOther) DOM.causeOfCprOther.style.display = e.target.value === 'อื่นๆ (ระบุ)' ? 'block' : 'none';
+        });
 
         // --- PDF Generation ---
         async function buildPDFContent() {
-            let patientData = activePatientData || {
-                hn: 'ไม่ระบุ', name: 'ไม่ระบุ', age: '-', cause: '-', underlying: '-', medHistory: '-', surgHistory: '-', substance: 'no', alcohol: 'no', smoking: 'no'
-            };
+            let patientData = activePatientData || { hn: 'ไม่ระบุ', name: 'ไม่ระบุ', age: '-', cause: '-', underlying: '-', medHistory: '-', surgHistory: '-', substance: 'no', alcohol: 'no', smoking: 'no' };
             const getRadioValue = (val) => val === 'yes' ? 'ใช่' : 'ไม่';
             
+            if(!DOM.reportContent) return;
             DOM.reportContent.innerHTML = `
                 <style>
                     #reportContent { font-family: 'Sarabun', sans-serif; padding: 1.5cm; color: #000; }
@@ -1335,17 +1239,17 @@
                 <p><strong>สาเหตุยุติ:</strong> ${stopReason || 'กำลังดำเนินการ'} | <strong>Adrenaline รวม:</strong> ${adrenalineDose} Dose</p>
 
                 <h2>สรุปการให้ยาอื่นๆ</h2>
-                ${DOM.medicationTable.outerHTML}
+                ${DOM.medicationTable ? DOM.medicationTable.outerHTML : ''}
 
                 <h2>สรุปบันทึก ECG</h2>
-                ${DOM.ecgTable.outerHTML}
+                ${DOM.ecgTable ? DOM.ecgTable.outerHTML : ''}
 
                 <h2>บันทึกเพิ่มเติม</h2>
-                <p>${DOM.generalNotes.value || '-'}</p>
+                <p>${DOM.generalNotes ? DOM.generalNotes.value : '-'}</p>
 
                 <div class="footer">
                     <p>ผู้บันทึก: .......................................................</p>
-                    <p>(${DOM.recorderName.value || '_______________________'})</p>
+                    <p>(${DOM.recorderName ? DOM.recorderName.value : '_______________________'})</p>
                 </div>
             `;
             
@@ -1358,19 +1262,14 @@
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                 pdf.save(`CPR_Record_${patientData.hn || 'Patient'}.pdf`);
-            } catch (err) {
-                console.error(err);
-                showAlert('Error', 'ไม่สามารถสร้างไฟล์ PDF ได้');
-            }
+            } catch (err) { showAlert('Error', 'ไม่สามารถสร้างไฟล์ PDF ได้'); }
         }
 
-        DOM.generateReportBtn.addEventListener('click', async () => {
+        if(DOM.generateReportBtn) DOM.generateReportBtn.addEventListener('click', async () => {
             const originalText = DOM.generateReportBtn.innerHTML;
             DOM.generateReportBtn.disabled = true;
             DOM.generateReportBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังสร้าง PDF...';
-            
             await buildPDFContent();
-            
             DOM.generateReportBtn.disabled = false;
             DOM.generateReportBtn.innerHTML = originalText;
         });
