@@ -82,29 +82,31 @@
     </div>
 
     <div class="container !pt-4">
+        
         <div id="tab-home" class="tab-pane active">
+            
             <div id="activePatientBanner" class="active-patient-banner" onclick="switchModule('tab-registry')">
                 <div>
                     <div class="text-xs text-blue-100 uppercase tracking-wide font-bold mb-1">ผู้ป่วยที่กำลังกู้ชีพ (Active Patient)</div>
-                    <div id="activePatientNameDisplay" class="font-bold text-lg"><i class="fa-solid fa-circle-exclamation text-yellow-300 mr-2"></i>ยังไม่ได้เลือกผู้ป่วย (แตะเพื่อลงทะเบียน)</div>
+                    <div id="activePatientNameDisplay" class="font-bold text-lg"><i class="fa-solid fa-circle-exclamation text-yellow-300 mr-2"></i>ยังไม่ได้เลือกผู้ป่วย (แตะเพื่อเลือก/ลงทะเบียน)</div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-white/70"></i>
             </div>
 
-            <div class="glass-card flex flex-col md:flex-row gap-4 justify-between items-center bg-white border-blue-100">
+            <div class="glass-card flex flex-col md:flex-row gap-4 justify-between items-center bg-white border border-blue-100 shadow-sm">
                 <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
                     <div>
                         <div class="text-xs font-bold text-slate-500 mb-1">เวลาปัจจุบัน</div>
-                        <div id="currentTime" class="text-3xl lg:text-4xl font-extrabold text-slate-800">00:00:00</div>
+                        <div id="currentTime" class="text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight">00:00:00</div>
                     </div>
                     <div class="border-l-2 border-slate-200 pl-4 lg:pl-6">
                         <div class="text-xs font-bold text-indigo-500 mb-1">CPR ทำมาแล้ว</div>
-                        <div id="overallCprElapsed" class="text-3xl lg:text-4xl font-extrabold text-indigo-600">00:00</div>
+                        <div id="overallCprElapsed" class="text-3xl lg:text-4xl font-extrabold text-indigo-600 tracking-tight">00:00</div>
                     </div>
                 </div>
-                <div class="bg-red-50 rounded-xl px-4 py-2 flex flex-col items-center justify-center w-full md:w-auto border border-red-100">
+                <div class="bg-red-50 rounded-xl px-4 py-2 flex flex-col items-center justify-center w-full md:w-auto border border-red-100 min-w-[200px]">
                     <div class="text-xs font-bold text-red-500 mb-1">เวลา CPR คงเหลือ (30 นาที)</div>
-                    <div id="overallCprCountdown" class="text-3xl lg:text-4xl font-extrabold text-red-600">30:00</div>
+                    <div id="overallCprCountdown" class="text-3xl lg:text-4xl font-extrabold text-red-600 tracking-tight">30:00</div>
                     <div class="text-xs text-slate-500 mt-1">จะครบ 30 นาทีเวลา: <span id="cpr30mEtaDisplay" class="font-bold text-slate-700">--:--:--</span></div>
                 </div>
                 <button id="confirmDeathBtn" class="btn btn-red shadow-lg text-lg w-full md:w-auto px-6 py-4"><i class="fa-solid fa-hand mr-2"></i> ยุติการ CPR</button>
@@ -398,6 +400,10 @@
         </div>
     </div>
 
+    <div id="reportContainerWrapper" style="position: absolute; left: -9999px; top: auto; width: 210mm; background: white; color: black; z-index: -1;">
+        <div id="reportContent"></div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -513,7 +519,7 @@
         }
         document.querySelectorAll('.nav-item, .nav-item-desktop').forEach(item => { item.addEventListener('click', function() { switchModule(this.getAttribute('data-target')); }); });
 
-        // --- SUBTITLE & VOICE (Fix) ---
+        // --- SUBTITLE & VOICE (Interactive Fix) ---
         let thVoice = null;
         let voiceUnlocked = false;
 
@@ -828,7 +834,7 @@
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = eta.toLocaleTimeString('th-TH').split(' ')[0];
         }
 
-        // --- Timer Buttons (Fixed Looping) ---
+        // --- Timer Buttons (Fixed Looping & Unlock logic) ---
         DOM.startCprTimerBtn.addEventListener('click', () => {
             if (isCprTimerRunning) return;
             if (roscAchieved) { overallCprTimeRemaining = 1800; cprStartTime = null; roscAchieved = false; logActivity("เริ่ม CPR ซ้ำ", "CPR"); }
@@ -842,7 +848,12 @@
                 }, 1000); 
             }
             isCprTimerRunning = true; 
-            DOM.startCprTimerBtn.disabled = true; DOM.stopCprTimerBtn.disabled = false; DOM.resetCprTimerBtn.disabled = true; 
+            
+            // ใช้ setAttribute และ removeAttribute เพื่อความชัวร์ในการข้ามสถานะ disabled
+            DOM.startCprTimerBtn.setAttribute('disabled', 'true'); 
+            DOM.stopCprTimerBtn.removeAttribute('disabled'); 
+            DOM.resetCprTimerBtn.setAttribute('disabled', 'true'); 
+            
             logActivity(`เริ่มรอบ CPR 2 นาที`, 'CPR'); updateCprEta();
             speak("เริ่มทำซีพีอาร์");
             
@@ -858,10 +869,12 @@
                     if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = formatTime(120);
                     
                     if (DOM.cprContinuousMode && DOM.cprContinuousMode.checked) {
-                        DOM.startCprTimerBtn.disabled = false; 
+                        DOM.startCprTimerBtn.removeAttribute('disabled'); 
                         setTimeout(() => DOM.startCprTimerBtn.click(), 100);
                     } else { 
-                        DOM.stopCprTimerBtn.disabled = true; DOM.startCprTimerBtn.disabled = false; DOM.resetCprTimerBtn.disabled = false; 
+                        DOM.stopCprTimerBtn.setAttribute('disabled', 'true'); 
+                        DOM.startCprTimerBtn.removeAttribute('disabled'); 
+                        DOM.resetCprTimerBtn.removeAttribute('disabled'); 
                         if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; 
                     }
                 }
@@ -870,13 +883,17 @@
 
         DOM.stopCprTimerBtn.addEventListener('click', () => {
             clearInterval(cprTimerInterval); isCprTimerRunning = false; 
-            DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true; DOM.resetCprTimerBtn.disabled = false; 
+            DOM.startCprTimerBtn.removeAttribute('disabled'); 
+            DOM.stopCprTimerBtn.setAttribute('disabled', 'true'); 
+            DOM.resetCprTimerBtn.removeAttribute('disabled'); 
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; logActivity(`หยุดรอบ CPR ชั่วคราว`, 'CPR');
         });
+        
         DOM.resetCprTimerBtn.addEventListener('click', () => {
             clearInterval(cprTimerInterval); isCprTimerRunning = false; cprTimeRemaining = 120; 
             if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = "02:00";
-            DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true;
+            DOM.startCprTimerBtn.removeAttribute('disabled'); 
+            DOM.stopCprTimerBtn.setAttribute('disabled', 'true');
             if(DOM.cprCycleEtaDisplay) DOM.cprCycleEtaDisplay.textContent = '--:--:--'; logActivity("รีเซ็ตนาฬิกา CPR", 'CPR');
         });
 
@@ -884,7 +901,11 @@
             if (isAdrenalineTimerRunning) return;
             adrenalineDose++; if(DOM.adrenalineDoseDisplay) DOM.adrenalineDoseDisplay.textContent = adrenalineDose;
             isAdrenalineTimerRunning = true; 
-            DOM.startAdrenalineTimerBtn.disabled = true; DOM.stopAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = true;
+            
+            DOM.startAdrenalineTimerBtn.setAttribute('disabled', 'true'); 
+            DOM.stopAdrenalineTimerBtn.removeAttribute('disabled'); 
+            DOM.resetAdrenalineTimerBtn.setAttribute('disabled', 'true');
+            
             logActivity(`ให้ยา Adrenaline Dose ${adrenalineDose} แล้ว และเริ่มจับเวลา 3 นาที`, 'ADRENALINE');
             speak(`ฉีดยาอะดรีนาลีนโดสที่ ${adrenalineDose}`);
             
@@ -895,14 +916,16 @@
                 if (adrenalineTimeRemaining <= 0) {
                     clearInterval(adrenalineTimerInterval); isAdrenalineTimerRunning = false; 
                     logActivity(`ครบ 3 นาที เตรียมฉีด Adrenaline โดสถัดไป`, 'ADRENALINE'); adrenalineTimeRemaining = 180; 
-                    speak(`หมดเวลา ฉีดยาอะดรีนาลีนโดสที่ ${adrenalineDose + 1}`);
+                    speak(`หมดเวลา เตรียมพิจารณาฉีดยาอะดรีนาลีนโดสถัดไป`);
                     if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
                     
                     if (DOM.adrenalineContinuousMode && DOM.adrenalineContinuousMode.checked) {
-                        DOM.startAdrenalineTimerBtn.disabled = false; 
+                        DOM.startAdrenalineTimerBtn.removeAttribute('disabled'); 
                         setTimeout(() => DOM.startAdrenalineTimerBtn.click(), 100);
                     } else { 
-                        DOM.stopAdrenalineTimerBtn.disabled = true; DOM.startAdrenalineTimerBtn.disabled = false; DOM.resetAdrenalineTimerBtn.disabled = false; 
+                        DOM.stopAdrenalineTimerBtn.setAttribute('disabled', 'true'); 
+                        DOM.startAdrenalineTimerBtn.removeAttribute('disabled'); 
+                        DOM.resetAdrenalineTimerBtn.removeAttribute('disabled'); 
                     }
                 }
             }, 1000);
@@ -910,35 +933,40 @@
 
         DOM.stopAdrenalineTimerBtn.addEventListener('click', () => {
             clearInterval(adrenalineTimerInterval); isAdrenalineTimerRunning = false;
-            DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true; DOM.resetAdrenalineTimerBtn.disabled = false;
+            DOM.startAdrenalineTimerBtn.removeAttribute('disabled'); 
+            DOM.stopAdrenalineTimerBtn.setAttribute('disabled', 'true'); 
+            DOM.resetAdrenalineTimerBtn.removeAttribute('disabled');
         });
 
         DOM.resetAdrenalineTimerBtn.addEventListener('click', () => {
             clearInterval(adrenalineTimerInterval); isAdrenalineTimerRunning = false; adrenalineTimeRemaining = 180; 
             if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
-            DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true; logActivity("รีเซ็ตนาฬิกา Adrenaline", 'ADRENALINE');
+            DOM.startAdrenalineTimerBtn.removeAttribute('disabled'); 
+            DOM.stopAdrenalineTimerBtn.setAttribute('disabled', 'true'); 
+            logActivity("รีเซ็ตนาฬิกา Adrenaline", 'ADRENALINE');
         });
 
         // --- General Event Buttons ---
         DOM.roscBtn.addEventListener('click', () => {
             roscAchieved = true; cprStopTime = new Date(); stopReason = 'ROSC';
-            [cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval].forEach(clearInterval);
+            [cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval].forEach(clearInterval);
             isCprTimerRunning = false; isAdrenalineTimerRunning = false;
             if(DOM.cprTimerDisplay) DOM.cprTimerDisplay.textContent = "02:00";
             if(DOM.adrenalineTimerDisplay) DOM.adrenalineTimerDisplay.textContent = "03:00";
-            DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true; DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true;
+            DOM.startCprTimerBtn.removeAttribute('disabled'); DOM.stopCprTimerBtn.setAttribute('disabled', 'true'); 
+            DOM.startAdrenalineTimerBtn.removeAttribute('disabled'); DOM.stopAdrenalineTimerBtn.setAttribute('disabled', 'true');
             logActivity("ROSC (ผู้ป่วยกลับมามีชีพจร)", "ROSC"); 
             speak("อาร์ โอ เอส ซี กรุณาดูแลผู้ป่วยหลังการกู้ชีพ");
             
             DOM.roscBtn.style.display = 'none'; DOM.continueBtn.style.display = 'inline-flex';
-            document.getElementById('roscModal').classList.add('visible');
+            document.getElementById('roscModal').classList.add('visible'); // Show ROSC Modal
         });
 
         document.getElementById('saveRoscBtn').addEventListener('click', () => {
             document.getElementById('roscModal').classList.remove('visible');
             if(DOM.quickSummaryBtn) {
                 DOM.quickSummaryBtn.style.display = 'block';
-                DOM.quickSummaryBtn.click(); 
+                DOM.quickSummaryBtn.click(); // โชว์ summary ทันที
             }
         });
 
@@ -951,10 +979,11 @@
         });
 
         DOM.confirmDeathBtn.addEventListener('click', () => {
-            [cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval].forEach(clearInterval);
+            [cprTimerInterval, adrenalineTimerInterval, overallCprCountdownInterval, cprElapsedInterval].forEach(clearInterval);
             isCprTimerRunning = false; isAdrenalineTimerRunning = false;
             if(!cprStopTime) cprStopTime = new Date();
-            DOM.startCprTimerBtn.disabled = false; DOM.stopCprTimerBtn.disabled = true; DOM.startAdrenalineTimerBtn.disabled = false; DOM.stopAdrenalineTimerBtn.disabled = true;
+            DOM.startCprTimerBtn.removeAttribute('disabled'); DOM.stopCprTimerBtn.setAttribute('disabled', 'true'); 
+            DOM.startAdrenalineTimerBtn.removeAttribute('disabled'); DOM.stopAdrenalineTimerBtn.setAttribute('disabled', 'true');
             logActivityToAll(`เตรียมยุติการ CPR`, 'STOP');
             speak("เตรียมยุติการกู้ชีพ โปรดระบุสาเหตุ");
             if(DOM.reasonForDeathSection) DOM.reasonForDeathSection.style.display = 'block';
@@ -997,9 +1026,9 @@
             localMedications.push(item); addTableRowLocal(DOM.medicationTableBody, [item.name, item.dosage, item.time, item.notes]);
             logActivity(`ให้ยา: ${item.name} ${item.dosage} เวลา ${item.time}`, 'MED');
             
-            // ขานเวลาเสียงพูดแบบ นาฬิกา นาที
-            let timeStr = `${now.getHours()} นาฬิกา ${now.getMinutes()} นาที`;
-            speak(`ให้ยา ${medName} ${medDose} เวลา ${timeStr}`);
+            let timeParts = medTime.split(':');
+            let h = parseInt(timeParts[0]); let m = parseInt(timeParts[1]);
+            speak(`ให้ยา ${medName} ${medDose} เวลา ${h} นาฬิกา ${m} นาที`);
             
             [DOM.medicationName, DOM.medicationDosage, DOM.medicationTime, DOM.medicationNotes].forEach(e => { if(e) e.value = '' });
         });
@@ -1014,8 +1043,9 @@
             logActivity(`ECG: ${item.type} | ทำ: ${item.activity} ${item.output}J`, 'ECG');
             
             if(ecgAct.includes('DEFIB')) {
-                let timeStr = `${now.getHours()} นาฬิกา ${now.getMinutes()} นาที`;
-                speak(`ดีฟิบ ${ecgOut} จูล เวลา ${timeStr}`);
+                let timeParts = ecgT.split(':');
+                let h = parseInt(timeParts[0]); let m = parseInt(timeParts[1]);
+                speak(`ดีฟิบ ${ecgOut} จูล เวลา ${h} นาฬิกา ${m} นาที`);
             }
 
             [DOM.ecgType, DOM.ecgActivity, DOM.ecgOutput, DOM.ecgTime, DOM.ecgNotes].forEach(e => { if(e) e.value = '' });
@@ -1098,8 +1128,8 @@
             let medsHtml = ev.medications && ev.medications.length ? ev.medications.map(m => `<tr><td style="padding:6px; border:1px solid #ccc;">${m.name}</td><td style="padding:6px; border:1px solid #ccc;">${m.dosage}</td><td style="padding:6px; border:1px solid #ccc;">${m.time}</td><td style="padding:6px; border:1px solid #ccc;">${m.notes}</td></tr>`).join('') : '<tr><td colspan="4" style="text-align:center; padding:6px; border:1px solid #ccc;">ไม่มีข้อมูล</td></tr>';
             let ecgsHtml = ev.ecgs && ev.ecgs.length ? ev.ecgs.map(e => `<tr><td style="padding:6px; border:1px solid #ccc;">${e.type}</td><td style="padding:6px; border:1px solid #ccc;">${e.activity}</td><td style="padding:6px; border:1px solid #ccc;">${e.output}</td><td style="padding:6px; border:1px solid #ccc;">${e.time}</td><td style="padding:6px; border:1px solid #ccc;">${e.notes}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center; padding:6px; border:1px solid #ccc;">ไม่มีข้อมูล</td></tr>';
             
-            // แยกตาราง Timeline 
-            const parsePdfLogs = (arr) => arr ? arr.map(l => `<li style="margin-bottom:4px;">${l.replace(/<[^>]*>?/gm, '')}</li>`).join('') : '<li>ไม่มีข้อมูล</li>';
+            // แยกตาราง Timeline (เพิ่มความสมบูรณ์รองรับภาษาไทย)
+            const parsePdfLogs = (arr) => arr && arr.length > 0 ? arr.map(l => `<li style="margin-bottom:4px;">${l.replace(/<[^>]*>?/gm, '')}</li>`).join('') : '<li>ไม่มีข้อมูล</li>';
             let cprLogsHtml = parsePdfLogs(ev.logs?.cpr);
             let adrLogsHtml = parsePdfLogs(ev.logs?.adrenaline);
 
